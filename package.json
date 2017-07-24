@@ -1,6 +1,6 @@
 {
   "name": "actions-ai-app",
-  "version": "0.0.0-semantically-released",
+  "version": "0.0.0-development",
   "description": "A Node module to simplify the development of Actions on Google API.ai applications.",
   "main": "index.js",
   "scripts": {
@@ -10,11 +10,12 @@
     "docs": "jsdoc2md 'bin/**/*.js' > docs/api.md && jsdoc2md --private 'bin/**/*.js' > docs/docs.md",
     "precommit": "npm run test-min",
     "commit": "git-cz",
-    "commitmsg": "validate-commit-msg"
+    "commitmsg": "validate-commit-msg",
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "config": {
     "commitizen": {
-      "path": "cz-conventional-changelog"
+      "path": "./node_modules/cz-conventional-changelog"
     }
   },
   "author": "Adam Hartwig <adam@adamhartwig.co.uk> (http://www.adamhartwig.co.uk)",
@@ -47,11 +48,11 @@
     "nyc": "^11.1.0",
     "sinon": "^2.3.8",
     "sinon-chai": "^2.12.0",
-    "validate-commit-msg": "^2.13.1"
+    "validate-commit-msg": "^2.13.1",
+    "semantic-release": "^6.3.6"
   },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ImAdamTM/actions-ai-app.git"
   }
 }
