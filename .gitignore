@@ -1,0 +1,13 @@
+# Operating System
+node_modules
+./cache
+.nyc_output
+coverage
+
+# OSX
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# NPM
+npm-debug.log

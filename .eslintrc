@@ -1,0 +1,21 @@
+{
+  "extends": [
+    "airbnb-base"
+  ],
+  "env": {
+    "node": true
+  },
+  "globals": {
+    "describe": false,
+    "it": false,
+    "before": false,
+    "beforeEach": false,
+    "after": false,
+    "afterEach": false
+  },
+  "rules": {
+    "no-param-reassign": 0,
+    "no-console": 0,
+    "class-methods-use-this": 0
+  }
+}
