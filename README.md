@@ -1,3 +1,6 @@
+[![travis build](https://img.shields.io/travis/ImAdamTM/actions-ai-app.svg?style=flat-square)](https://github.com/ImAdamTM/actions-ai-app)
+[![license](https://img.shields.io/github/license/ImAdamTM/actions-ai-app.svg?style=flat-square)](https://github.com/ImAdamTM/actions-ai-app)
+
 ## Table of Contents
 
 * [Introduction](#introduction)
