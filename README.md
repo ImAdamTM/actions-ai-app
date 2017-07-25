@@ -52,6 +52,8 @@ This module was created with the simple goal to make it easier to build and inte
 
 ## Example
 
+For more examples, refer the the [example directory](example).
+
 ### Basic Usage Example
 
 Using [Express](https://expressjs.com/):
@@ -560,12 +562,13 @@ With this in mind, it is recommended that:
 ### Initial Setup
 
 1. To start building your application, you should first create the project within the Google Console and API.ai. Use the [Actions on Google Console](https://console.actions.google.com/) to add a new project with a name of your choosing.
-2. Click "Use API.AI" and then "Create Actions on API.AI".
-3. Enter the project details within API.ai and save.
-4. When a new API.ai project is created, a `Default Fallback Intent` and `Default Welcome Intent` are created by default, you may wish to remove these (unless you are opting for full synchronization, in which case they will be removed for you automatically when your application synchronizes).
-5. Within API.ai for your project, navigate to settings and take note of your `Developer access token` which we will use for synchronizing your application to API.ai directly.
-6. If developing locally, you may wish to use a service such as [ngrok](https://ngrok.com/). In either case, you will need to browse to the `Fulfillment` tab of your project within API.ai, enable your webook and point it to the web address of your application when it is available
-7. Create your node.js application and install the `actions-ai-app` module. Follow the configuration outlined in the [App](#app) section, using your API.ai `Developer access token` to be able to utilize the update capabilities.
+1. Click *Use API.AI* and then *Create Actions on API.AI* to open the API.AI console.
+1. Click *Save* to save the project.
+1. Click on the gear icon to see the project settings.
+1. Take note of your `Developer access token` which we will use for synchronizing your application to API.ai directly.
+1. When a new API.ai project is created, a `Default Fallback Intent` and `Default Welcome Intent` are created by default, you may wish to remove these (unless you are opting for full synchronization, in which case they will be removed for you automatically when your application synchronizes).
+1. If developing locally, you may wish to use a service such as [ngrok](https://ngrok.com/). In either case, you will need to browse to the `Fulfillment` tab of your project within API.ai, enable your webook and point it to the web address of your application when it is available
+1. Create your node.js application and install the `actions-ai-app` module. Follow the configuration outlined in the [App](#app) section, using your API.ai `Developer access token` to be able to utilize the update capabilities.
 
 ## License
 

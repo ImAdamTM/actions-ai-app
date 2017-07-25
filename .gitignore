@@ -11,3 +11,4 @@ coverage
 
 # NPM
 npm-debug.log
+cache/
