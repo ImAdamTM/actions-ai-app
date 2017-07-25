@@ -164,8 +164,8 @@ class GoogleActionsAIApp {
       const namespace = typeof this.props.debug === 'boolean' ?
         '*' :
         this.props.debug;
-      process.env.GOOGLE_ACTIONS_AI_APP_DEBUG = `${
-        process.env.GOOGLE_ACTIONS_AI_APP_NAMESPACE}:${namespace}`;
+      process.env.ACTIONS_AI_APP_DEBUG = `${
+        process.env.ACTIONS_AI_APP_NAMESPACE}:${namespace}`;
     }
   }
 

@@ -13,7 +13,7 @@ const getTimestamp = () => `[${
 // Read the env.NODE_DEBUG to determine which logs are to be used
 /* istanbul ignore next */
 const getNamespace = () => {
-  let namespaces = process.env.GOOGLE_ACTIONS_AI_APP_DEBUG;
+  let namespaces = process.env.ACTIONS_AI_APP_DEBUG;
   const skips = [];
   const names = [];
   const split = (namespaces || '').split(/[\s,]+/);
@@ -73,9 +73,9 @@ const log = (...args) => {
  * @private
  */ /* istanbul ignore next */
 const debug = function debug(...args) {
-  if (!process.env.GOOGLE_ACTIONS_AI_APP_DEBUG) return;
+  if (!process.env.ACTIONS_AI_APP_DEBUG) return;
 
-  const key = `${process.env.GOOGLE_ACTIONS_AI_APP_NAMESPACE}:${this.key}`;
+  const key = `${process.env.ACTIONS_AI_APP_NAMESPACE}:${this.key}`;
 
   if (!this.matched) {
     this.match = matchNamespace(key);

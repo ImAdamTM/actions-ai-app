@@ -25,9 +25,9 @@ describe('bin/lib/store', () => {
   let reducers;
   let appData;
 
-  process.env.GOOGLE_ACTIONS_AI_APP_DEBUG = true;
-  process.env.GOOGLE_ACTIONS_AI_APP_NAMESPACE = 'ga-ai-app';
-  process.env.GOOGLE_ACTIONS_AI_APP_DEBUG = 'ga-ai-app:*';
+  process.env.ACTIONS_AI_APP_DEBUG = true;
+  process.env.ACTIONS_AI_APP_NAMESPACE = 'ga-ai-app';
+  process.env.ACTIONS_AI_APP_DEBUG = 'ga-ai-app:*';
 
   beforeEach(() => {
     actions = new Map();
