@@ -33,28 +33,6 @@ describe('bin/lib/SSML', () => {
       expect(ssml.output()).to.eq(expected);
     });
 
-    it('add to and output a response with fallback', () => {
-      const expected = `<speak>${sample.join(' <break time="0.2s"/> ')}</speak>`;
-
-      sample.forEach((sentence) => {
-        ssml.add(sentence);
-      });
-
-      expect(ssml.output(true)).to.eq(expected);
-    });
-
-    it('add text that only outputs on fallback', () => {
-      const expected = '<speak>This is the only output.</speak>';
-
-      sample.forEach((sentence) => {
-        ssml.add(sentence, { fallback: true });
-      });
-
-      ssml.add('This is the only output.');
-
-      expect(ssml.output()).to.eq(expected);
-    });
-
     it('apply inner repeatable of nested add', () => {
       const ssmlAdd = new SSML();
 
@@ -173,6 +151,17 @@ describe('bin/lib/SSML', () => {
       ssml.add('Repeated');
 
       const filtered = ssml.filterRepeatable(ssml.list());
+      expect(filtered[0].output).to.eq('Repeated');
+    });
+
+    it('filter repeatable from ssml instance', () => {
+      sample.forEach((sentence) => {
+        ssml.add(sentence, { repeat: false });
+      });
+
+      ssml.add('Repeated');
+
+      const filtered = ssml.filterRepeatable(ssml);
       expect(filtered[0].output).to.eq('Repeated');
     });
 

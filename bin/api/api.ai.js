@@ -22,6 +22,9 @@ const debug = require('../lib/util/debug')('api');
  * not exist in the application (such as items manually added into the api.ai
  * console interface)
  * @return {Promise} resolves/rejects on completion
+ * TODO: If removing entities before intents, there is a chance that an intent
+ * could still be using entities that are being removed. Need to address this:
+ * 'Some entity names are in use: [entity_name]'
  * @private
  */
 exports.updateAPIAI = props => new Promise((resolve, reject) => {
@@ -33,7 +36,7 @@ exports.updateAPIAI = props => new Promise((resolve, reject) => {
       ];
 
       if (props.clean && !props.cleanForceSync) {
-        tasks.unshift({ fn: cleanEntities, args: [props, entities] });
+        // tasks.unshift({ fn: cleanEntities, args: [props, entities] });
         tasks.push({ fn: cleanIntents, args: [props, intents] });
       } else if (props.cleanForceSync) {
         debug(chalk.bold.yellow('Force syncing api.ai to local...'));

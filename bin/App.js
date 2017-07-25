@@ -216,6 +216,8 @@ class GoogleActionsAIApp {
             resolve('UPDATE_SUCCESS');
           })
           .catch((err) => {
+            // TODO: If errorType is `errorType: 'too_many_requests'`
+            // add a better description
             debugApi(chalk.bold.magenta('Error updating api.ai:'), err, 'red');
             this.ready = true;
             resolve('UPDATE_FAIL');

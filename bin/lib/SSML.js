@@ -145,20 +145,31 @@ class SSML {
    */
   filterRepeatable(input) {
     const final = [];
-    if (!Array.isArray(input)) return input;
-    for (let i = 0, len = input.length; i < len; i += 1) {
+    let list;
+
+    if (Array.isArray(input)) {
+      list = input;
+    } else if (input instanceof SSML) {
+      list = input.list();
+    }
+
+    if (!Array.isArray(list)) return input;
+
+    for (let i = 0, len = list.length; i < len; i += 1) {
+      const item = Object.assign({}, list[i]);
       /* istanbul ignore next */
-      if (input[i].output.indexOf('<break time') === 0 &&
-          (input[i].repeat || (input[i].repeat === null ||
-            input[i].repeat === undefined))) {
+      if (item.output.indexOf('<break time') === 0 &&
+          (item.repeat || (item.repeat === null ||
+            item.repeat === undefined))) {
         final.push({
           output: '<break time="0.5s"/>',
-          repeat: input[i].repeat,
-          random: input[i].random,
+          repeat: item.repeat,
+          random: item.random,
         });
-      } else if (input[i].repeat || (input[i].repeat === null ||
-        input[i].repeat === undefined)) {
-        final.push(input[i]);
+      } else if (item.repeat || (item.repeat === null ||
+        item.repeat === undefined) || item.fallback) {
+        if (item.fallback) item.fallback = false;
+        final.push(item);
       }
     }
 
@@ -167,27 +178,18 @@ class SSML {
 
   /**
    * Output the SSML
-   *
-   * @param {Boolean} fallback whether or not this output is related to a
-   * fallback output
    */
-  output(fallback) {
+  output() {
     const final = [];
 
     for (let i = 0, len = this.phrases.length; i < len; i += 1) {
-      if (!this.phrases[i].fallback || fallback) {
-        if (this.phrases[i].random) {
-          final.push(random(this.phrases[i].output));
-        } else {
-          final.push(this.phrases[i].output);
-        }
+      if (this.phrases[i].random && Array.isArray(this.phrases[i].output)) {
+        final.push(random(this.phrases[i].output));
+      } else {
+        final.push(this.phrases[i].output);
       }
     }
 
-    if (fallback) {
-      const out = final.join(' <break time="0.2s"/> ');
-      return `<speak>${out}</speak>`;
-    }
     return `<speak>${final.join(' ')}</speak>`;
   }
 }

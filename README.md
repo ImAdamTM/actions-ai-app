@@ -30,7 +30,7 @@ A Node module to simplify the development of Actions on Google + API.ai applicat
 
 [![travis build](https://img.shields.io/travis/ImAdamTM/actions-ai-app.svg?style=flat-square)](https://github.com/ImAdamTM/actions-ai-app)
 [![release](https://img.shields.io/github/release/ImAdamTM/actions-ai-app.svg?style=flat-square)](https://github.com/ImAdamTM/actions-ai-app)
-[![coveralls](https://coveralls.io/repos/github/ImAdamTM/actions-ai-app/badge.svg?branch=master&style=flat-square)](https://github.com/ImAdamTM/actions-ai-app)
+[![Coverage Status](https://coveralls.io/repos/github/ImAdamTM/actions-ai-app/badge.svg?branch=master)](https://coveralls.io/github/ImAdamTM/actions-ai-app?branch=master&style=flat-square)
 [![license](https://img.shields.io/github/license/ImAdamTM/actions-ai-app.svg?style=flat-square)](https://github.com/ImAdamTM/actions-ai-app)
 
 
@@ -276,7 +276,7 @@ intent('input.moon_fact', {
 <a name="entity"></a>
 ## app.entity(name, terms, props)
 
-The `entity(name, configuration)` method allows you to dynamically create and register entities to API.ai, which can then be utilized by your intents. It accepts 2 parameters:
+The `entity(name, terms, props)` method allows you to dynamically create and register entities to API.ai, which can then be utilized by your intents. It accepts 2 parameters:
 
 |Parameter|Description|
 |------------------|-----------|
@@ -512,8 +512,8 @@ Appends content to the current SSML data.
 |input:Mixed|The input content to append to the SSML, this can be a number of possible types, including a String, Array, or another SSML instance|
 |props:Object|All SSML behaviors accept a `props` Object. This optional parameter allows you additional fine tuning behavior on top of simply adding content|
 |props.random:Boolean|Used in conjunction with adding arrays: `ssml.add(['A', 'B', 'C'], { random: true );`, this will select a random item from the array for output (so the output could be 'A', 'B' or 'C'. (default is _false_)|
-|props.fallback:Boolean|You can specify whether this ssml addition should only be utilized on fallback. For example, you may want to clarify something to the user the second time around, but feel it is otherwise not required. You can do so with `ssml.add('Some additional hint.', { fallback: true});`. In this circumstance, calling the standard `ssml.output()` this content will not be included, but if outputting with `ssml.output(true)` (which indicates we are outputting a fallback), then it will be. (default is _false_) |
-|props.repeat:Boolean|In addition to fallbacks, you can also specify whether you would like the content to be flagged as non-repeating. To be used in conjunction with `const output = ssml.filterRepeatable(ssml.list())` which will exclude any ssml item that was flagged with `repeat: false` (default is _true_)|
+|props.fallback:Boolean|You can specify whether this ssml addition should only be utilized on fallback (repeat). For example, you may want to clarify something to the user the second time around, but feel it is otherwise not required. You can do so with `ssml.add('Some additional hint.', { fallback: true});`. In this circumstance, when `ssml.filterRepeatable(ssml)` is used, the fallback will be included. (default is _false_) |
+|props.repeat:Boolean|In addition to fallbacks, you can also specify whether you would like the content to be flagged as non-repeating. To be used in conjunction with `const output = ssml.filterRepeatable(ssml)` which will exclude any ssml item that was flagged with `repeat: false` (default is _true_)|
 
 <a name="ssml-set"></a>
 ### ssml.set(input, props)
@@ -537,7 +537,7 @@ Returns a list of only repeatable content from an `ssml.list()` (see the SSML pr
 
 <a name="ssml-output"></a>
 ### ssml.output()
-Returns the SSML in its compiled `<speak></speak>` format. This method also has a single boolean parameter that allows you to specify whether it is fallback output `ssml.output(true)` (see the SSML prop detail above). Typically this is automatically called after intent responses (`res.ask()`, `res.tell()`...), however when using `invokeIntent` or building a fallback intent you are able to take advantage of this.
+Returns the SSML in its compiled `<speak></speak>` format.
 
 ## Caching
 
