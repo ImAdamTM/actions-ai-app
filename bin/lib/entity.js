@@ -1,5 +1,12 @@
 // Entity
 
+const DEFAULTS = {
+  ENTITY: {
+    isEnum: false,
+    automatedExpansion: false,
+  },
+};
+
 /**
  * Add an entity configuration to the registry for API.AI insertion
  *
@@ -7,14 +14,17 @@
  * @param {String} key the unique name for the entity
  * @param {Array} terms the array of terms to enter into the entity
  * @private
- *
- * TODO look into extra options per API.ai spec: https://api.ai/docs/reference/agent/entities#entity_object
  */
-const registerEntity = (registry, key, terms) => {
-  registry.set(key, {
-    name: key,
-    entries: terms,
-  });
+const registerEntity = (registry, key, terms, props) => {
+  const options = Object.assign({}, DEFAULTS.ENTITY, props);
+  registry.set(key, Object.assign(
+    {},
+    DEFAULTS.ENTITY,
+    options,
+    {
+      name: key,
+      entries: terms,
+    }));
 };
 
 /**
@@ -24,7 +34,7 @@ const registerEntity = (registry, key, terms) => {
  * @param  {type} terms the terms for the entity (refer to API.AI spec)
  * @private
  */
-exports.entity = function entity(key, terms) {
+exports.entity = function entity(key, terms, props) {
   if (typeof key !== 'string') {
     throw new Error('Entity key must be a string');
   }
@@ -37,7 +47,7 @@ exports.entity = function entity(key, terms) {
     throw new Error('Entity expects an array of term objects');
   }
 
-  registerEntity(this.entityRegistry, key, terms);
+  registerEntity(this.entityRegistry, key, terms, props);
 
   return this;
 };

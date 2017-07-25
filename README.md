@@ -274,14 +274,15 @@ intent('input.moon_fact', {
 ```
 
 <a name="entity"></a>
-## app.entity(name, terms)
+## app.entity(name, terms, props)
 
 The `entity(name, configuration)` method allows you to dynamically create and register entities to API.ai, which can then be utilized by your intents. It accepts 2 parameters:
 
 |Parameter|Description|
 |------------------|-----------|
 |name:String|The unique name of the entity|
-|terms:Array|The list of terms for the entity. This follows the `entries` config from the [API.AI Entity API](https://api.ai/docs/reference/agent/entities#entity_object)|
+|terms:Array|The list of terms for the entity. This follows the `entries` config from the [API.ai Entity API](https://api.ai/docs/reference/agent/entities#entity_object)|
+|props:Object|Optional object containing any extra API.ai API properties to configure along with the entity (E.g. `isEnum` or `automatedExpansion`). Refer to the [API.ai Entity API](https://api.ai/docs/reference/agent/entities#entity_object) for more information|
 
 ```
 ...
