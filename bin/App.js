@@ -211,7 +211,8 @@ class GoogleActionsAIApp {
           entities: this.entityRegistry,
         })
           .then(() => {
-            debugApi('api.ai updated successfully');
+            // TODO add tick symbol
+            debugApi('api.ai updated successfully', chalk.green('✔'));
             this.ready = true;
             resolve('UPDATE_SUCCESS');
           })
