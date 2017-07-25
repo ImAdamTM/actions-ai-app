@@ -20,10 +20,10 @@
   },
   "author": "Adam Hartwig <adam@adamhartwig.co.uk> (http://www.adamhartwig.co.uk)",
   "license": "MIT",
-  "bug": {
-    "url": ""
+  "bugs": {
+    "url": "https://github.com/ImAdamTM/actions-ai-app/issues"
   },
-  "homepage": "",
+  "homepage": "https://github.com/ImAdamTM/actions-ai-app",
   "dependencies": {
     "actions-on-google": "^1.2.0",
     "chalk": "^1.1.3",
