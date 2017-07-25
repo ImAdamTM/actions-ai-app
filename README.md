@@ -1,6 +1,3 @@
-[![travis build](https://img.shields.io/travis/ImAdamTM/actions-ai-app.svg?style=flat-square)](https://github.com/ImAdamTM/actions-ai-app)
-[![license](https://img.shields.io/github/license/ImAdamTM/actions-ai-app.svg?style=flat-square)](https://github.com/ImAdamTM/actions-ai-app)
-
 ## Table of Contents
 
 * [Introduction](#introduction)
@@ -30,6 +27,12 @@
 # actions-ai-app
 
 A Node module to simplify the development of Actions on Google + API.ai applications for Google Assistant.
+
+[![travis build](https://img.shields.io/travis/ImAdamTM/actions-ai-app.svg?style=flat-square)](https://github.com/ImAdamTM/actions-ai-app)
+[![release](https://img.shields.io/github/release/ImAdamTM/actions-ai-app.svg?style=flat-square)](https://github.com/ImAdamTM/actions-ai-app)
+[![coveralls](https://coveralls.io/repos/github/ImAdamTM/actions-ai-app/badge.svg?branch=master&style=flat-square)](https://github.com/ImAdamTM/actions-ai-app)
+[![license](https://img.shields.io/github/license/ImAdamTM/actions-ai-app.svg?style=flat-square)](https://github.com/ImAdamTM/actions-ai-app)
+
 
 ## Introduction
 
