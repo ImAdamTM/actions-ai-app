@@ -183,10 +183,12 @@ class SSML {
     const final = [];
 
     for (let i = 0, len = this.phrases.length; i < len; i += 1) {
-      if (this.phrases[i].random && Array.isArray(this.phrases[i].output)) {
-        final.push(random(this.phrases[i].output));
-      } else {
-        final.push(this.phrases[i].output);
+      if (!this.phrases[i].fallback) {
+        if (this.phrases[i].random) {
+          final.push(random(this.phrases[i].output));
+        } else {
+          final.push(this.phrases[i].output);
+        }
       }
     }
 
