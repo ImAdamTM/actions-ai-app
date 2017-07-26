@@ -33,6 +33,18 @@ describe('bin/lib/SSML', () => {
       expect(ssml.output()).to.eq(expected);
     });
 
+    it('add text that only outputs on fallback', () => {
+      const expected = '<speak>This is the only output.</speak>';
+
+      sample.forEach((sentence) => {
+        ssml.add(sentence, { fallback: true });
+      });
+
+      ssml.add('This is the only output.');
+
+      expect(ssml.output()).to.eq(expected);
+    });
+
     it('apply inner repeatable of nested add', () => {
       const ssmlAdd = new SSML();
 
