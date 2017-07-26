@@ -39,7 +39,7 @@ exports.updateAPIAI = props => new Promise((resolve, reject) => {
         // tasks.unshift({ fn: cleanEntities, args: [props, entities] });
         tasks.push({ fn: cleanIntents, args: [props, intents] });
       } else if (props.cleanForceSync) {
-        debug(chalk.bold.yellow('Force syncing api.ai to local...'));
+        debug(chalk.bold.yellow('Force syncing api.ai from local...'));
 
         tasks.unshift({ fn: cleanEntities, args: [props, entities] });
         tasks.push({ fn: cleanIntents, args: [props, intents] });
