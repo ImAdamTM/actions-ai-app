@@ -17,8 +17,9 @@ intent('input.locate', {
 }, (res, ssml) => {
   getUserLocation(res, 'input.locate')
     .then((location) => {
-      // If we don't get a location, it means either `getUserLocation()`
-      // has taken control, so we should return anyway
+      // If we don't get a valid location, it means `getUserLocation()`
+      // hasn't yet resolved the users location. In which case it will
+      // handle the output itself
       if (!location) return;
       const { latitude, longitude } = location.coordinates;
       ssml.add('I found you!');
