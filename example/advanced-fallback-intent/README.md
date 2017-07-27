@@ -49,8 +49,8 @@ Bot: OK! Hello! Lets test the fallback intent! I won't repeat this. Test this fa
 1. Use the [Actions on Google Console](https://console.actions.google.com) to add a new project with a name of your choosing.
 1. Click *Use API.AI* and then *Create Actions on API.AI* to open the API.AI console.
 1. Click *Save* to save the project.
-1. Click on the gear icon to see the project settings. 
+1. Click on the gear icon to see the project settings.
 1. Take note of your `Developer access token` which we will use for synchronizing your application to API.ai directly. Edit the `app/ai.js` and set your API.ai token: `APIAIToken: 'API_AI_DEVELOPER_TOKEN'`
-1. If developing locally, you may wish to use a service such as [ngrok](https://ngrok.com/). In either case, you will need to browse to the `Fulfillment` tab of your project within API.ai, enable your webook and point it to the web address of your application when it is available
+1. If developing locally, you may wish to use a service such as [ngrok](https://ngrok.com/). In either case, you will need to browse to the `Fulfillment` tab of your project within API.ai, enable your webhook and point it to the web address of your application when it is available
 1. Use `yarn run start` or `npm start` to start the application.
 1. View your project in the API.ai console to test the application. See the example conversation above for this demonstration.
