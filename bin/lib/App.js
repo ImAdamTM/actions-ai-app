@@ -67,7 +67,7 @@ class App {
 
       for (let i = 0, len = contexts.length; i < len; i += 1) {
         const context = contexts[i];
-        app.setContext(context.name, 0, context.parameters);
+        app.setContext(context.name, context.lifespan + 1, context.parameters);
       }
 
       return contexts;
