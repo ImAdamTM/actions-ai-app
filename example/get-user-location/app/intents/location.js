@@ -3,6 +3,10 @@
 const { intent } = require('../ai');
 const { getUserLocation } = require('./permissions');
 
+/**
+ * The location request intent
+ * @type {intent}
+ */
 intent('input.locate', {
   userSays: [
     'What is my current location?',

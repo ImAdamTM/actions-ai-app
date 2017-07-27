@@ -2,6 +2,15 @@
 
 const { intent, invokeIntent, action } = require('../ai');
 
+/**
+ * Get the user location. Utilizes the `askForPermission()` method from
+ * `actions-on-google`
+ * @param  {Object} res the intent `res` instance
+ * @param  {String} callbackIntent the key of the intent we will callback
+ * @param  {String} locationRequestMessage the text that informs the user why
+ * we are asking for their locaiton
+ * @return {Promise} resolves on completion
+ */
 exports.getUserLocation = (
   res,
   callbackIntent = 'input.unknown',
@@ -24,6 +33,7 @@ exports.getUserLocation = (
 
 /**
  * The permissions actions
+ * @type {action}
  */
 action('permissions', {
   SET_USER_LOCATION: (state, payload) => {
@@ -48,6 +58,7 @@ action('permissions', {
  * The `actions_intent_PERMISSION` intent. This uses a native `event` that
  * is called immediately after the result of a location request from
  * `askForPermission()`
+ * @type {intent}
  */
 intent('intent.permissions.location', {
   events: [{ name: 'actions_intent_PERMISSION' }],
