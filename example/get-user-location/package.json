@@ -1,0 +1,20 @@
+{
+  "name": "get-user-location",
+  "version": "1.0.0",
+  "description": "An example for getting the users location",
+  "main": "app/index.js",
+  "scripts": {
+    "start": "nodemon app/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Adam Hartwig <adam@adamhartwig.co.uk>",
+  "license": "MIT",
+  "dependencies": {
+    "actions-ai-app": "1.2.2",
+    "body-parser": "^1.17.2",
+    "express": "^4.15.3"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0"
+  }
+}

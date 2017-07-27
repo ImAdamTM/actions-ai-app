@@ -104,11 +104,11 @@ app.start({
 
 ### Synchronization
 
-One key aspect that this module targets is the way that you configure your intents and entities within API.ai. It can be cumbersome and difficult to manage these within the API.ai interface on top of managing the responses in your own application as two sepearate configurations. Instead, this module combines them, utilizing [API.ai's own API](https://api.ai/docs/reference/agent/) to allow you to configure your intents and entities alongside your behaviors and have them automatically synchronize.
+One key aspect that this module targets is the way that you configure your intents and entities within API.ai. It can be cumbersome and difficult to manage these within the API.ai interface on top of managing the responses in your own application as two separate configurations. Instead, this module combines them, utilizing [API.ai's own API](https://api.ai/docs/reference/agent/) to allow you to configure your intents and entities alongside your behaviors and have them automatically synchronize.
 
 You can enable either partial synchronization (only manages intents/entities you have created in your application, leaving content you have manually entered into api.ai in tact) or full synchronization (which means API.ai is kept fully in sync with your application at all times).
 
-To reduce the number of API calls made to API.ai, this module stores a running a cache of your intents and entities as json files at a location of your preference, which is then used to compare against and only push targeted changes when they have occurred.
+To reduce the number of API calls made to API.ai, this module stores a running a cache of your intents and entities as `json` files at a location of your preference, which is then used to compare against and only push targeted changes when they have occurred.
 
 Refer to the [App](#App) section for more information on configuration.
 
@@ -221,7 +221,7 @@ Additional parameters include:
 |------------------|-----------|
 |res.sessionId:String|A shorthand to `request.body.sessionId`, which is the users session Id|
 |res.userInput:String|The raw input string that the user said or wrote that invoked the intent|
-|res.hasScreen:Boolean|A shorthand to `res.hasSurfaceCapability(res.SurfaceCapabilities.SCREEN_OUTPUT)` which tells you whether or not the users device is capabale of [screen output](https://developers.google.com/actions/assistant/surface-capabilities)|
+|res.hasScreen:Boolean|A shorthand to `res.hasSurfaceCapability(res.SurfaceCapabilities.SCREEN_OUTPUT)` which tells you whether or not the users device is capable of [screen output](https://developers.google.com/actions/assistant/surface-capabilities)|
 |res.hasAudio:Boolean|A shorthand to `res.hasSurfaceCapability(res.SurfaceCapabilities.AUDIO_OUTPUT)` which tells you whether or not the users device is capabale of [audio output](https://developers.google.com/actions/assistant/surface-capabilities)|
 |res.store:Object|The `store` object relates to the state management behaviors built into this framework, which is a replacement set of functionality for managing session data. Refer to `app.action` for more information.|
 
@@ -278,7 +278,7 @@ intent('input.moon_fact', {
 <a name="entity"></a>
 ## app.entity(name, terms, props)
 
-The `entity(name, terms, props)` method allows you to dynamically create and register entities to API.ai, which can then be utilized by your intents. It accepts 2 parameters:
+The `entity(name, terms, props)` method allows you to dynamically create and register entities to API.ai, which can then be utilized by your intents. It accepts 3 parameters:
 
 |Parameter|Description|
 |------------------|-----------|
@@ -535,7 +535,7 @@ Returns the current array of content within the SSML instance
 
 <a name="ssml-filter-repeatable"></a>
 ### ssml.filterRepeatable(list)
-Returns a list of only repeatable content from an `ssml.list()` (see the SSML props detail above)
+Returns a list of only repeatable content from an `ssml` instance or array (see the SSML props detail above)
 
 <a name="ssml-output"></a>
 ### ssml.output()
