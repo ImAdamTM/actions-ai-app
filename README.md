@@ -330,7 +330,7 @@ intent('input.game.prompt.response', {
   const response = res.getArgument('response');
 
   // Response
-  if (response.match(/^(yes)$/)) {
+  if (response.match(/yes/)) {
     // User responded with a `yes` match
     ssml.add('OK. Let\'s get started!');
     // Do something
@@ -338,7 +338,7 @@ intent('input.game.prompt.response', {
     return;
   }
 
-  if (response.match(/^(no)$/)) {
+  if (response.match(/no/)) {
     // User responded with a `no` match
     ssml.add('OK. Bye');
     res.tell(ssml);
