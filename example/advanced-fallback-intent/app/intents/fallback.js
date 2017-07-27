@@ -128,7 +128,7 @@ intent('input.unknown.response', {
 }, (res, ssml) => {
   const response = res.getArgument('response');
 
-  if (response.match(/^(yes)$/)) {
+  if (response.match(/yes/)) {
     // User said yes to continuing
     const { contexts, lastOutput } = res.store.getState().fallback;
 
