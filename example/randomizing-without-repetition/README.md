@@ -1,32 +1,30 @@
-# Advanced fallback intents
+# Randomizing without repetition
 
-This example demonstrates an advanced fallback intent that can keep track of how many times the user has landed on the fallback intent sequentially.
+This example demonstrates the use of the store to list out a series of  items in a randomized non-repetitive order that the user can iterate through. This works by creating a randomized array of indexes when the user asks for a fact the first time and storing it to their state (session) data.
 
-The benefit of tracking fallback intent invocations is that you can dynamically change the behavior of your application based on whether the user appears to be having trouble performing a particular action. This gives you an opportunity to steer the conversation when it becomes clearer the user is trying to do something that isn't permissible.
-
-Finally, if the user keeps failing to get the result they intend, rather than an infinite loop of fallbacks, you can present the user with a choice whether they would like to continue.
+Subsequent requests for facts iterate over this randomized index list until we reach the end.
 
 ## Example
 ```
 User: Hello
 
-Bot: Hi! Lets test the fallback intent! I won't repeat this. Test this fallback by saying anything. For example, say "Fallback".
+Bot: Hello! Ask me for an interesting fact!
 
-User: Something else
+User: Tell me a fact
 
-Bot: Sorry. I didn't catch that (1). Lets test the fallback intent! I will only say this on fallback. Say something else again.
-
-User: Fallback test
-
-Bot: Sorry. I didn't catch that (2). Lets test the fallback intent! I will only say this on fallback. Say something else again.
-
-User: Testing
-
-Bot: I'm having trouble understanding. Would you like to continue?
+Bot: Super interesting fact 3. Would you like to hear another fact?
 
 User: Yes
 
-Bot: OK! Hello! Lets test the fallback intent! I won't repeat this. Test this fallback by saying anything. For example, say "Fallback".
+Bot: Super interesting fact 1. Would you like to hear another fact?
+
+User: Yes
+
+Bot: Super interesting fact 2. Would you like to hear another fact?
+
+User: Yes
+
+Bot: Super interesting fact 4. That's all the facts I have for you. Is there something else I can help you with?.
 ```
 
 ## Project Structure
@@ -38,7 +36,8 @@ Bot: OK! Hello! Lets test the fallback intent! I won't repeat this. Test this fa
 │    ├── intents             # The intents directory
 │    │   ├── index.js        # Imports the intents for use
 │    │   ├── fallback.js     # The fallback intent (when the app doesn't understand)
-│    │   └── welcome.js      # The welcome intent (greets the user)
+│    │   ├── welcome.js      # The welcome intent (greets the user)
+│    │   └── facts.js        # The facts intent (tells randomized facts)
 │    └── ai.js               # `actions-ai-app` creation (exports the intent, invokeIntent, action, and entity methods so that we may import them anywhere)
 ├── cache                    # The cache is used to store json data for API.AI
 └── nodemon.js               # Nodemon config, specifically we ignore the `cache` directory as we don't need refresh when cache changes
@@ -54,3 +53,4 @@ Bot: OK! Hello! Lets test the fallback intent! I won't repeat this. Test this fa
 1. If developing locally, you may wish to use a service such as [ngrok](https://ngrok.com/). In either case, you will need to browse to the `Fulfillment` tab of your project within API.ai, enable your webhook and point it to the web address of your application when it is available
 1. Use `yarn run start` or `npm start` to start the application.
 1. View your project in the API.ai console to test the application. See the example conversation above for this demonstration.
+I

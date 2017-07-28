@@ -1,4 +1,4 @@
-# Get User Location
+# Get user location
 
 _Note: This demo can only be demonstrated in the Actions on Google Console due to it using the `askForPermission()` behavior._
 
