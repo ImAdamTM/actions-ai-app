@@ -45,6 +45,7 @@ This module was created with the simple goal to make it easier to build and inte
 - Simplifies the creation of intents and entities, along with state-managed session handling
 - Ability to synchronize your configurations directly into api.ai, managing them exclusively from within your application
 - Allows you to quickly create applications with less boilerplate
+- Fine tune conversational flow by invoking any of your intents from within another intent with `invokeIntent()`
 - Built-in SSML (Speech Synthesis Markup Language) utility to quickly create complex rich natural conversation
 
 ## Installation
