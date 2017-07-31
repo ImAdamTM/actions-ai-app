@@ -38,7 +38,7 @@ Bot: How about this cat fact! A cat can't climb head first down a tree because e
 │    │   ├── index.js          # Imports the intents for use
 │    │   ├── question          # The questions intents module
 │    │       ├── index.js      # The questions dynamic intents handling
-│    │       ├── cat-facts.js  # The list of cat facts
+│    │       └── cat-facts.js  # The list of cat facts
 │    │   ├── fallback.js       # The fallback intent (when the app doesn't understand)
 │    │   └── welcome.js        # The welcome intent (greets the user)
 │    └── ai.js                 # `actions-ai-app` creation (exports the intent, invokeIntent, action, and entity methods so that we may import them anywhere)
