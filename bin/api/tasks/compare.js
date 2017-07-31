@@ -33,9 +33,7 @@ exports.compareIntentWithCache = (intent, cachePath) => {
 
           resolve(false);
         })
-        .catch(() => {
-          resolve(false);
-        });
+        .catch(() => resolve(false));
     });
   });
 };
@@ -70,9 +68,7 @@ exports.compareEntitiesWithCache = (entities, cachePath) => {
 
           resolve(false);
         })
-        .catch(() => {
-          resolve(false);
-        });
+        .catch(() => resolve(false));
     });
   });
 };

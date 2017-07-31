@@ -52,9 +52,7 @@ exports.getCachedFileList = (filepath, cachePath) => {
 
           resolve(res.map(entity => entity.name));
         })
-        .catch(() => {
-          resolve([]);
-        });
+        .catch(() => resolve([]));
     });
   });
 };
@@ -152,7 +150,5 @@ exports.cleanEntities = (props, entities) => new Promise((resolve, reject) => {
         .then(() => resolve())
         .catch(err => reject(err));
     })
-    .catch((err) => {
-      reject(err);
-    });
+    .catch(err => reject(err));
 });

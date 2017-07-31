@@ -22,12 +22,8 @@ exports.deleteIntentFromCache = (intent, cachePath) => {
 
   return new Promise((resolve, reject) => {
     fs.remove(deletePath)
-      .then(() => {
-        resolve();
-      })
-      .catch((err) => {
-        reject(err);
-      });
+      .then(() => resolve())
+      .catch(err => reject(err));
   });
 };
 

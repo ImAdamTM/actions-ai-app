@@ -89,10 +89,6 @@ exports.getIntentsAndEntities = props => new Promise((resolve, reject) => {
       exports.getIntents(props),
       exports.getEntities(props),
     ])
-    .then(([intents, entities]) => {
-      resolve({ intents, entities });
-    })
-    .catch((err) => {
-      reject(err);
-    });
+    .then(([intents, entities]) => resolve({ intents, entities }))
+    .catch(err => reject(err));
 });

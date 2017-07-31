@@ -17,12 +17,8 @@ exports.writeIntentToCache = (intent, cachePath) => {
 
   return new Promise((resolve, reject) => {
     fs.writeJson(outputPath, intent)
-      .then(() => {
-        resolve();
-      })
-      .catch((err) => {
-        reject(err);
-      });
+      .then(() => resolve())
+      .catch(err => reject(err));
   });
 };
 
@@ -39,11 +35,7 @@ exports.writeEntitiesToCache = (entities, cachePath) => {
 
   return new Promise((resolve, reject) => {
     fs.writeJson(outputPath, entities)
-      .then(() => {
-        resolve();
-      })
-      .catch((err) => {
-        reject(err);
-      });
+      .then(() => resolve())
+      .catch(err => reject(err));
   });
 };
