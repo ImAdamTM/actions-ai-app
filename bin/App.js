@@ -1,5 +1,10 @@
 // App
 
+/**
+ * TODO
+ * - Notify if intents/entities registered AFTER app has been started
+ */
+
 const path = require('path');
 const chalk = require('chalk');
 const App = require('./lib/App');
