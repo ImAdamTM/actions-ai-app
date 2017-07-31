@@ -32,16 +32,18 @@ Bot: How about this cat fact! A cat can't climb head first down a tree because e
 
 ```
 .
-├── app                      # The application directory
-│    ├── index.js            # App initialization
-│    ├── intents             # The intents directory
-│    │   ├── index.js        # Imports the intents for use
-│    │   ├── fallback.js     # The fallback intent (when the app doesn't understand)
-│    │   ├── welcome.js      # The welcome intent (greets the user)
-│    │   └── facts.js        # The facts intent (tells randomized facts)
-│    └── ai.js               # `actions-ai-app` creation (exports the intent, invokeIntent, action, and entity methods so that we may import them anywhere)
-├── cache                    # The cache is used to store json data for API.AI
-└── nodemon.js               # Nodemon config, specifically we ignore the `cache` directory as we don't need refresh when cache changes
+├── app                        # The application directory
+│    ├── index.js              # App initialization
+│    ├── intents               # The intents directory
+│    │   ├── index.js          # Imports the intents for use
+│    │   ├── question          # The questions intents module
+│    │       ├── index.js      # The questions dynamic intents handling
+│    │       ├── cat-facts.js  # The list of cat facts
+│    │   ├── fallback.js       # The fallback intent (when the app doesn't understand)
+│    │   └── welcome.js        # The welcome intent (greets the user)
+│    └── ai.js                 # `actions-ai-app` creation (exports the intent, invokeIntent, action, and entity methods so that we may import them anywhere)
+├── cache                      # The cache is used to store json data for API.AI
+└── nodemon.js                 # Nodemon config, specifically we ignore the `cache` directory as we don't need refresh when cache changes
 ```
 
 ## Steps
