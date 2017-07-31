@@ -7,7 +7,7 @@ Because we could in theory create a large amount of data with this technique. It
 
 In this scenario, it is recommended that you either run this initially in smaller chunks, or over a number of attempts. The internal caching mechanisms within `actions-ai-app` means that after an intent is initially created, it's cached json will mean that particular intent is not submitted again until changes have occurred in its configuration; this capability is only most beneficial AFTER intents have been registered at least once. Refer to api.ai documentation for more information on API request limits.
 
-As a rule of thumb, if your application is submitting more than 100 intents in a single try then you should consider splitting them initially to reduce the number of calls the first time they are registed. In the event that api.ai population failed, you will see this error appear in your console.
+As a rule of thumb, if your application is submitting more than 100 intents in a single try then you should consider splitting them initially to reduce the number of calls the first time they are registered. In the event that api.ai population failed, you will see this error appear in your console.
 
 ## Example
 ```
