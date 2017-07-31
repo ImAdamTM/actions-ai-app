@@ -1,7 +1,7 @@
 {
-  "name": "randomizing-without-repetition",
+  "name": "dynamic-intents",
   "version": "1.0.0",
-  "description": "An example of randomizing without repetition",
+  "description": "An example of dynamic intents",
   "main": "app/index.js",
   "scripts": {
     "start": "nodemon app/index.js",

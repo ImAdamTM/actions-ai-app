@@ -38,6 +38,7 @@ Bot: Super interesting fact 4. That's all the facts I have for you. Is there som
 │    │   ├── fallback.js     # The fallback intent (when the app doesn't understand)
 │    │   ├── welcome.js      # The welcome intent (greets the user)
 │    │   └── facts.js        # The facts intent (tells randomized facts)
+│    ├── entities.js         # The entities configuration
 │    └── ai.js               # `actions-ai-app` creation (exports the intent, invokeIntent, action, and entity methods so that we may import them anywhere)
 ├── cache                    # The cache is used to store json data for API.AI
 └── nodemon.js               # Nodemon config, specifically we ignore the `cache` directory as we don't need refresh when cache changes
