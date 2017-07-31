@@ -54,7 +54,7 @@ This module was created with the simple goal to make it easier to build and inte
 
 ## Example
 
-For more examples, refer the the [example directory](example).
+For more examples, refer to the [example directory](example).
 
 ### Basic Usage Example
 
