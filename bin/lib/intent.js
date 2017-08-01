@@ -56,16 +56,10 @@ exports.intent = function intent(key, config = null, actionCall = null) {
     if (!app.APP_OVERRIDE) {
       app.tellPrimary = app.tell;
       app.askPrimary = app.ask;
-
-      app.tell = (res) => { resolve({ call: 'tell', res }); };
-      app.ask = (res) => { resolve({ call: 'ask', res }); };
-      app.tellFirst = app.tell;
-      app.askFirst = app.ask;
-    } else {
-      /* istanbul ignore next */
-      app.tell = (res) => { resolve({ call: 'tell', res }); };
-      app.ask = (res) => { resolve({ call: 'ask', res }); };
     }
+
+    app.tell = (res) => { resolve({ call: 'tell', res }); };
+    app.ask = (res) => { resolve({ call: 'ask', res }); };
 
     app.APP_OVERRIDE = true;
 
@@ -137,6 +131,8 @@ exports.intent = function intent(key, config = null, actionCall = null) {
  */
 exports.invokeIntent = function invokeIntent(app, key) {
   const ssml = new SSML();
+  const tellRestore = app.tell;
+  const askRestore = app.ask;
 
   if (!this.intents.raw.get(key)) {
     debug(`Intent does not exist: ${chalk.bold.magenta(key)}`, 'red');
@@ -150,8 +146,8 @@ exports.invokeIntent = function invokeIntent(app, key) {
 
   return new Promise((resolve) => {
     this.intents.raw.get(key)(app, ssml).then((out) => {
-      app.tell = app.tellFirst;
-      app.ask = app.askFirst;
+      app.tell = tellRestore;
+      app.ask = askRestore;
 
       if (!out) {
         resolve(ssml);
