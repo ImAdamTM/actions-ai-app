@@ -29,6 +29,7 @@ describe('bin/api/api.ai', () => {
   let requestGetStub;
   let requestPutStub;
   let requestPostStub;
+  let requestDeleteStub;
   let fsEnsureStub;
   let fsEnsureDirSyncStub;
   let fsReadStub;
@@ -47,6 +48,11 @@ describe('bin/api/api.ai', () => {
       });
 
     requestPostStub = sinon.stub(request, 'post')
+      .callsFake((props, callback) => {
+        callback(null, '', { status: { code: 200 } });
+      });
+
+    requestDeleteStub = sinon.stub(request, 'delete')
       .callsFake((props, callback) => {
         callback(null, '', { status: { code: 200 } });
       });
@@ -78,6 +84,7 @@ describe('bin/api/api.ai', () => {
     requestGetStub.restore();
     requestPutStub.restore();
     requestPostStub.restore();
+    requestDeleteStub.restore();
     fsEnsureStub.restore();
     fsEnsureDirSyncStub.restore();
     fsReadStub.restore();
@@ -127,6 +134,50 @@ describe('bin/api/api.ai', () => {
         intents: new Map([['unmatched', { name: 'unmatch' }]]),
         entities: new Map([['test', { test: 'test' }]]),
       };
+
+      return expect(updateAPIAI(props)).to.eventually.be.rejected;
+    });
+
+    it('retries when entities sync fails then succeeds', () => {
+      requestDeleteStub.restore();
+      const props = {
+        cache: './cache',
+        cleanForceSync: true,
+        apiURL: 'https://api.api.ai/v1',
+        apiToken: '',
+        intents: new Map([['test', { name: 'test' }]]),
+        entities: new Map(),
+      };
+
+      requestDeleteStub = sinon.stub(request, 'delete')
+        .callsFake((innerProps, callback) => {
+          requestDeleteStub.restore();
+          requestDeleteStub = sinon.stub(request, 'delete')
+            .callsFake((a, callbackInner) => {
+              callbackInner(null, '', { status: { code: 200 } });
+            });
+
+          callback(null, '', { status: { code: 400 } });
+        });
+
+      return expect(updateAPIAI(props)).to.eventually.eq('success_retry');
+    });
+
+    it('retries when entities sync fails then fails again', () => {
+      requestDeleteStub.restore();
+      const props = {
+        cache: './cache',
+        cleanForceSync: true,
+        apiURL: 'https://api.api.ai/v1',
+        apiToken: '',
+        intents: new Map([['test', { name: 'test' }]]),
+        entities: new Map(),
+      };
+
+      requestDeleteStub = sinon.stub(request, 'delete')
+        .callsFake((innerProps, callback) => {
+          callback(null, '', { status: { code: 400, errorDetails: 'Error' } });
+        });
 
       return expect(updateAPIAI(props)).to.eventually.be.rejected;
     });

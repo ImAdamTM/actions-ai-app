@@ -173,6 +173,7 @@ exports.deleteIntents = (list, props, intents) => {
  */
 exports.deleteEntities = (list, props, entities) => {
   const tasks = exports.createTasks(list, props, entities, 'deleteEntity');
+
   return new Promise((resolve, reject) => {
     Promise
       .all(tasks)

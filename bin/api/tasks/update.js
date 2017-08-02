@@ -86,11 +86,18 @@ exports.updateEntities = (props) => {
 
   props.entities.forEach(entity => list.push(entity));
 
-  if (!list.length) return Promise.resolve('no update required');
-
   return new Promise((resolve, reject) => {
     compareEntitiesWithCache(list, props.cache)
       .then((matched) => {
+        if (!matched && !list.length) {
+          // Ensure entity cache is in sync
+          writeEntitiesToCache(list, props.cache)
+            .then(() => resolve('no update required'))
+            .catch(writeErr => reject(writeErr));
+
+          return;
+        }
+
         if (matched) {
           resolve('skipped');
           return;

@@ -8,6 +8,9 @@ const {
   deleteIntents,
   deleteEntities,
 } = require('./delete');
+const {
+  updateEntities,
+} = require('./update');
 
 /**
  * Returns the list of files in a given directory, with the file extensions
@@ -134,7 +137,7 @@ exports.cleanIntents = (props, intents) => {
  * on completion
  * @private
  */
-exports.cleanEntities = (props, entities) => new Promise((resolve, reject) => {
+exports.cleanEntities = (props, entities, softFail) => new Promise((resolve, reject) => {
   exports.getCachedFileList('entities.json', props.cache)
     .then((cached) => {
       const remove = exports.getCleanList(props, 'entities', entities, cached);
@@ -144,11 +147,25 @@ exports.cleanEntities = (props, entities) => new Promise((resolve, reject) => {
       const debugList = `${
         remove.map(intent => `\r\n- ${chalk.bold.yellow(intent.name)}`)}`;
 
-      debug(debugInfo + debugList);
+      if (softFail) debug(debugInfo + debugList);
 
       deleteEntities(remove, props, entities)
-        .then(() => resolve())
-        .catch(err => reject(err));
+        .then(() => {
+          updateEntities(props)
+            .then(() => resolve())
+            .catch(err => reject(err));
+        })
+        .catch((err) => {
+          if (softFail) {
+            if (err.status && err.status.errorDetails) {
+              debug(`${err.status.errorDetails}. Retrying...`, 'red');
+            }
+
+            resolve('retry_entities');
+          } else {
+            reject(err);
+          }
+        });
     })
     .catch(err => reject(err));
 });

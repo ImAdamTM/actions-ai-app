@@ -29,18 +29,27 @@ const mockProps = {
 // Tests
 describe('bin/api/tasks/clean', () => {
   let requestStub;
+  let requestPutStub;
   let fsStub;
   let fsEnsureStub;
   let fsEnsureDirSyncStub;
   let fsReadStub;
   let fsReadJsonStub;
+  let fsWriteJsonStub;
   let mockApiAiIntents;
+  let mockApiAiEntities;
 
   beforeEach(() => {
     requestStub = sinon.stub(request, 'delete')
       .callsFake((props, callback) => {
         callback(null, '', { status: { code: 200 } });
       });
+
+    requestPutStub = sinon.stub(request, 'put')
+      .callsFake((props, callback) => {
+        callback(null, '', { status: { code: 200 } });
+      });
+
 
     fsStub = sinon.stub(fs, 'remove')
       .callsFake(() => new Promise((resolve) => {
@@ -60,15 +69,20 @@ describe('bin/api/tasks/clean', () => {
 
     fsReadJsonStub = sinon.stub(fs, 'readJson')
       .callsFake(() => Promise.resolve());
+
+    fsWriteJsonStub = sinon.stub(fs, 'writeJson')
+      .callsFake(() => Promise.resolve());
   });
 
   afterEach(() => {
     requestStub.restore();
+    requestPutStub.restore();
     fsStub.restore();
     fsEnsureStub.restore();
     fsEnsureDirSyncStub.restore();
     fsReadStub.restore();
     fsReadJsonStub.restore();
+    fsWriteJsonStub.restore();
   });
 
   describe('cleanIntents()', () => {
@@ -92,9 +106,8 @@ describe('bin/api/tasks/clean', () => {
 
   describe('cleanEntities()', () => {
     it('attempts to clean a set of entities', () => {
-      mockApiAiIntents = [{ name: 'test' }, { name: 'test' }];
-
-      return expect(cleanEntities(mockProps, mockApiAiIntents))
+      mockApiAiEntities = [{ name: 'test' }, { name: 'test' }];
+      return expect(cleanEntities(mockProps, mockApiAiEntities))
         .to.eventually.be.fulfilled;
     });
 

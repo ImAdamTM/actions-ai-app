@@ -172,6 +172,22 @@ describe('bin/api/tasks/update', () => {
         .to.eventually.eq('no update required');
     });
 
+    it('handles rejection on failure to write cache when skipping', () => {
+      fsWriteStub.restore();
+      fsWriteStub = sinon.stub(fs, 'writeJson')
+        .callsFake(() => Promise.reject('cache write error poo'));
+
+      const props = {
+        cache: './cache',
+        apiURL: 'https://api.api.ai/v1',
+        apiToken: '',
+        entities: new Map(),
+      };
+
+      return expect(updateEntities(props))
+        .to.eventually.be.rejectedWith('cache write error');
+    });
+
 
     it('handles rejection on failure to write cache', () => {
       fsWriteStub.restore();

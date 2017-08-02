@@ -4,7 +4,6 @@ const chalk = require('chalk');
 const Promise = require('../lib/util/promise-extra');
 const {
   updateIntents,
-  updateEntities,
 } = require('./tasks/update');
 const { getIntentsAndEntities } = require('./tasks/get');
 const { cleanIntents, cleanEntities } = require('./tasks/clean');
@@ -22,31 +21,39 @@ const debug = require('../lib/util/debug')('api');
  * not exist in the application (such as items manually added into the api.ai
  * console interface)
  * @return {Promise} resolves/rejects on completion
- * TODO: If removing entities before intents, there is a chance that an intent
- * could still be using entities that are being removed. Need to address this:
- * 'Some entity names are in use: [entity_name]'
  * @private
  */
 exports.updateAPIAI = props => new Promise((resolve, reject) => {
   getIntentsAndEntities(props)
     .then(({ intents, entities }) => {
       const tasks = [
-        { fn: updateEntities, args: [props, intents] },
+        // { fn: updateEntities, args: [props, intents] },
         { fn: updateIntents, args: [props, intents] },
       ];
 
       if (props.clean && !props.cleanForceSync) {
-        // tasks.unshift({ fn: cleanEntities, args: [props, entities] });
+        tasks.unshift({ fn: cleanEntities, args: [props, entities, true] });
         tasks.push({ fn: cleanIntents, args: [props, intents] });
       } else if (props.cleanForceSync) {
         debug(chalk.bold.yellow('Force syncing api.ai from local...'));
 
-        tasks.unshift({ fn: cleanEntities, args: [props, entities] });
+        tasks.unshift({ fn: cleanEntities, args: [props, entities, true] });
         tasks.push({ fn: cleanIntents, args: [props, intents] });
       }
 
       Promise.allSync(tasks)
-        .then(() => resolve('success'))
+        .then((res) => {
+          if (res[0] === 'retry_entities') {
+            debug('Retry cleaning entities...');
+            cleanEntities(props, entities, false)
+              .then(() => resolve('success_retry'))
+              .catch(err => reject(err));
+
+            return;
+          }
+
+          resolve('success');
+        })
         .catch(err => reject(err));
     })
     .catch(err => reject(err));
