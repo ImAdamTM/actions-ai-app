@@ -221,9 +221,13 @@ class GoogleActionsAIApp {
             resolve('UPDATE_SUCCESS');
           })
           .catch((err) => {
-            // TODO: If errorType is `errorType: 'too_many_requests'`
-            // add a better description
             debugApi(chalk.bold.magenta('Error updating api.ai:'), err, 'red');
+
+            /* istanbul ignore next */
+            if (err.status && err.status.errorType === 'too_many_requests') {
+              debugApi('It appears you are trying to perform too many API.ai data insertion requests. Consider updating your intents/entities in chunks or wait a moment to try again.', 'red');
+            }
+
             this.ready = true;
             resolve('UPDATE_FAIL');
           });
