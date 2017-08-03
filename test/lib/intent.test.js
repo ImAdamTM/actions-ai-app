@@ -109,6 +109,19 @@ describe('bin/lib/intent', () => {
   });
 
   describe('intent()', () => {
+    it('prevents intent being added if called after app start()', () => {
+      intentModule = intent.bind({
+        reducers,
+        intentRegistry,
+        intents,
+        props: intentProps,
+        started: true,
+      });
+
+      intentModule('test', { userSays: ['hello'] }, () => {});
+      expect(intentRegistry.has('test')).to.eq(false);
+    });
+
     it('throws an error if no key is specified', () => {
       expect(() => intentModule())
         .to.throw('An intent key must be specified');

@@ -42,6 +42,12 @@ describe('bin/lib/store', () => {
       expect(actions.has('test')).to.eq(true);
     });
 
+    it('prevents action being added if called after app start()', () => {
+      actionModule = action.bind({ actions, reducers, started: true });
+      actionModule('test', sample);
+      expect(actions.has('test')).to.eq(false);
+    });
+
     it('expects an error when adding an action group with duplicate key', () => {
       actionModule('test', sample);
       expect(() => actionModule('test', sample))

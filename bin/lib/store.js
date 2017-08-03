@@ -61,6 +61,11 @@ const Store = function Store(context, app, data) {
  * @private
  */
 exports.action = function action(key, reducers, defaults = {}) {
+  if (this.started) {
+    debug(chalk.bold(`Actions may only be added before start() is called! ('${key}')`), 'red');
+    return this;
+  }
+
   if (this.actions.get(key)) {
     throw new Error(`Action group exists with key: ${key}`);
   }

@@ -1,10 +1,5 @@
 // App
 
-/**
- * TODO
- * - Notify if intents/entities registered AFTER app has been started
- */
-
 const path = require('path');
 const chalk = require('chalk');
 const App = require('./lib/App');
@@ -64,6 +59,7 @@ class GoogleActionsAIApp {
   constructor(props) {
     this.props = Object.assign({}, DEFAULTS.APP, props);
 
+    this.started = false;
     this.ready = false;
     this.intentRegistry = new Map();
     this.entityRegistry = new Map();
@@ -185,6 +181,8 @@ class GoogleActionsAIApp {
    */
   start(props) {
     const options = Object.assign({}, DEFAULTS.START, props);
+
+    this.started = true;
 
     return new Promise((resolve) => {
       if (options.update) {

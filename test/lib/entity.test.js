@@ -32,6 +32,12 @@ describe('bin/lib/entity', () => {
       expect(entityRegistry.has('test')).to.eq(true);
     });
 
+    it('prevents entity being added if called after app start()', () => {
+      entityModule = entity.bind({ entityRegistry, started: true });
+      entityModule('test', entry);
+      expect(entityRegistry.has('test')).to.eq(false);
+    });
+
     it('throws an error when entity key is not provide or not string', () => {
       expect(() => entityModule({}, entry))
         .to.throw('Entity key must be a string');

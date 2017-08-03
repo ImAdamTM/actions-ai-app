@@ -1,5 +1,8 @@
 // Entity
 
+const chalk = require('chalk');
+const debug = require('./util/debug')('entity');
+
 const DEFAULTS = {
   ENTITY: {
     isEnum: false,
@@ -35,6 +38,11 @@ const registerEntity = (registry, key, terms, props) => {
  * @private
  */
 exports.entity = function entity(key, terms, props) {
+  if (this.started) {
+    debug(chalk.bold(`Entities may only be added before start() is called! ('${key}')`), 'red');
+    return this;
+  }
+
   if (typeof key !== 'string') {
     throw new Error('Entity key must be a string');
   }

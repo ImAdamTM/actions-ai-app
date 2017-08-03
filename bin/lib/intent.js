@@ -29,6 +29,11 @@ const registerIntent = (registry, key, config) => {
 exports.intent = function intent(key, config = null, actionCall = null) {
   let action;
 
+  if (this.started) {
+    debug(chalk.bold(`Intents may only be added before start() is called! ('${key}')`), 'red');
+    return this;
+  }
+
   if (typeof key !== 'string') {
     throw new Error('An intent key must be specified');
   }
