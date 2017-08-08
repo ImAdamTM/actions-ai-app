@@ -22,9 +22,7 @@ describe('bin/lib/App', () => {
     'google-assistant-api-version': 'v2',
   };
 
-  beforeEach(() => {
-
-  });
+  beforeEach(() => {});
 
   it('creates a new App()', () => {
     mockRequest = new MockRequest(headers, { result: {} });

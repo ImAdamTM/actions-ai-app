@@ -50,8 +50,8 @@ describe('bin/lib/intent', () => {
         nonexistentMethod(); // eslint-disable-line
       });
 
-      return expect(intents.store.get('test')(data))
-        .to.eventually.become('An error occurred.');
+      return expect(intents.store.get('test')(data)).to.eventually.become(
+        'An error occurred.');
     });
 
     it('expects to output when intent completes with string', () => {
@@ -62,8 +62,8 @@ describe('bin/lib/intent', () => {
         res.ask('something');
       });
 
-      return expect(intents.store.get('test')(data))
-        .to.eventually.become('something');
+      return expect(intents.store.get('test')(data)).to.eventually.become(
+        'something');
     });
 
     it('expects to output when intent completes with ssml', () => {
@@ -74,8 +74,8 @@ describe('bin/lib/intent', () => {
         ssml.add('test');
         res.ask(ssml);
       });
-      return expect(intents.store.get('test')(data))
-        .to.eventually.be.an.instanceOf(SSML);
+      return expect(
+        intents.store.get('test')(data)).to.eventually.be.an.instanceOf(SSML);
     });
 
     it('expects to output when intent completes with no output', () => {
@@ -86,8 +86,8 @@ describe('bin/lib/intent', () => {
         res.ask();
       });
 
-      return expect(intents.store.get('test')(data))
-        .to.eventually.become(undefined);
+      return expect(intents.store.get('test')(data)).to.eventually.become(
+        undefined);
     });
 
     it('expects to output with override behavior', () => {
@@ -103,8 +103,8 @@ describe('bin/lib/intent', () => {
         res.ask('override');
       });
 
-      return expect(intents.store.get('test')(data))
-        .to.eventually.become('override');
+      return expect(intents.store.get('test')(data)).to.eventually.become(
+        'override');
     });
   });
 
@@ -123,8 +123,7 @@ describe('bin/lib/intent', () => {
     });
 
     it('throws an error if no key is specified', () => {
-      expect(() => intentModule())
-        .to.throw('An intent key must be specified');
+      expect(() => intentModule()).to.throw('An intent key must be specified');
     });
 
     it('registers an intent with api.ai config', () => {
@@ -139,19 +138,19 @@ describe('bin/lib/intent', () => {
         next('hello');
       });
 
-      return expect(invokeIntentModule({ store }, 'test'))
-        .to.eventually.become('hello');
+      return expect(invokeIntentModule({ store }, 'test')).to.eventually.become(
+        'hello');
     });
 
     it('throws an error when adding an intent with duplicate key', () => {
       intentModule('test', null, () => {});
-      expect(() => intentModule('test', null, () => {}))
-        .to.throw('Intent with key already exists: test');
+      expect(() => intentModule('test', null, () => {})).to.throw(
+        'Intent with key already exists: test');
     });
 
     it('throws an error if no intent action method is specified', () => {
-      expect(() => intentModule('test'))
-        .to.throw('An intent action method must be specified');
+      expect(() => intentModule('test')).to.throw(
+        'An intent action method must be specified');
     });
   });
 
@@ -159,16 +158,16 @@ describe('bin/lib/intent', () => {
     it('expects to fail when intent with key does not exist', () => {
       store = createStore({ reducers }, appData, {});
 
-      return expect(invokeIntentModule({ store }, 'test'))
-        .to.eventually.become(null);
+      return expect(invokeIntentModule({ store }, 'test')).to.eventually.become(
+        null);
     });
 
     it('expects to fail when intent invoked contains error', () => {
       store = createStore({ reducers }, appData, {});
       intentModule('test', null, () => nonexistentMethod()); // eslint-disable-line
 
-      return expect(invokeIntentModule({ store }, 'test'))
-        .to.eventually.become(null);
+      return expect(invokeIntentModule({ store }, 'test')).to.eventually.become(
+        null);
     });
 
     it('invokes an intent with empty response', () => {
@@ -177,7 +176,8 @@ describe('bin/lib/intent', () => {
         next();
       });
 
-      return expect(invokeIntentModule({ store }, 'test'))
+      return expect(
+        invokeIntentModule({ store }, 'test'))
         .to.eventually.become({ phrases: [] });
     });
 
@@ -187,7 +187,8 @@ describe('bin/lib/intent', () => {
         next();
       });
 
-      return expect(invokeIntentModule({ store }, 'test'))
+      return expect(
+        invokeIntentModule({ store }, 'test'))
         .to.eventually.become({ phrases: [] });
     });
 
@@ -197,8 +198,8 @@ describe('bin/lib/intent', () => {
         res.ask('testing');
       });
 
-      return expect(invokeIntentModule({ store }, 'test'))
-        .to.eventually.become('testing');
+      return expect(invokeIntentModule({ store }, 'test')).to.eventually.become(
+        'testing');
     });
 
     it('invokes an intent that uses next() response', () => {
@@ -207,8 +208,8 @@ describe('bin/lib/intent', () => {
         next('testing');
       });
 
-      return expect(invokeIntentModule({ store }, 'test'))
-        .to.eventually.become('testing');
+      return expect(invokeIntentModule({ store }, 'test')).to.eventually.become(
+        'testing');
     });
   });
 });

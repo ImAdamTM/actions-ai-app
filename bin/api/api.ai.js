@@ -2,9 +2,7 @@
 
 const chalk = require('chalk');
 const Promise = require('../lib/util/promise-extra');
-const {
-  updateIntents,
-} = require('./tasks/update');
+const { updateIntents } = require('./tasks/update');
 const { getIntentsAndEntities } = require('./tasks/get');
 const { cleanIntents, cleanEntities } = require('./tasks/clean');
 const debug = require('../lib/util/debug')('api');
@@ -23,38 +21,36 @@ const debug = require('../lib/util/debug')('api');
  * @return {Promise} resolves/rejects on completion
  * @private
  */
-exports.updateAPIAI = props => new Promise((resolve, reject) => {
-  getIntentsAndEntities(props)
-    .then(({ intents, entities }) => {
-      const tasks = [
-        // { fn: updateEntities, args: [props, intents] },
-        { fn: updateIntents, args: [props, intents] },
-      ];
+exports.updateAPIAI = props =>
+  new Promise((resolve, reject) => {
+    getIntentsAndEntities(props)
+      .then(({ intents, entities }) => {
+        const tasks = [{ fn: updateIntents, args: [props, intents] }];
 
-      if (props.clean && !props.cleanForceSync) {
-        tasks.unshift({ fn: cleanEntities, args: [props, entities, true] });
-        tasks.push({ fn: cleanIntents, args: [props, intents] });
-      } else if (props.cleanForceSync) {
-        debug(chalk.bold.yellow('Force syncing api.ai from local...'));
+        if (props.clean && !props.cleanForceSync) {
+          tasks.unshift({ fn: cleanEntities, args: [props, entities, true] });
+          tasks.push({ fn: cleanIntents, args: [props, intents] });
+        } else if (props.cleanForceSync) {
+          debug(chalk.bold.yellow('Force syncing api.ai from local...'));
 
-        tasks.unshift({ fn: cleanEntities, args: [props, entities, true] });
-        tasks.push({ fn: cleanIntents, args: [props, intents] });
-      }
+          tasks.unshift({ fn: cleanEntities, args: [props, entities, true] });
+          tasks.push({ fn: cleanIntents, args: [props, intents] });
+        }
 
-      Promise.allSync(tasks)
-        .then((res) => {
-          if (res[0] === 'retry_entities') {
-            debug('Retry cleaning entities...');
-            cleanEntities(props, entities, false)
-              .then(() => resolve('success_retry'))
-              .catch(err => reject(err));
+        Promise.allSync(tasks)
+          .then((res) => {
+            if (res[0] === 'retry_entities') {
+              debug('Retry cleaning entities...');
+              cleanEntities(props, entities, false)
+                .then(() => resolve('success_retry'))
+                .catch(err => reject(err));
 
-            return;
-          }
+              return;
+            }
 
-          resolve('success');
-        })
-        .catch(err => reject(err));
-    })
-    .catch(err => reject(err));
-});
+            resolve('success');
+          })
+          .catch(err => reject(err));
+      })
+      .catch(err => reject(err));
+  });

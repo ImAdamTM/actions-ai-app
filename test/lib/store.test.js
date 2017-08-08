@@ -48,10 +48,10 @@ describe('bin/lib/store', () => {
       expect(actions.has('test')).to.eq(false);
     });
 
-    it('expects an error when adding an action group with duplicate key', () => {
+    it('expects error when adding an action group with duplicate key', () => {
       actionModule('test', sample);
-      expect(() => actionModule('test', sample))
-        .to.throw('Action group exists with key: test');
+      expect(() => actionModule('test', sample)).to.throw(
+        'Action group exists with key: test');
     });
   });
 

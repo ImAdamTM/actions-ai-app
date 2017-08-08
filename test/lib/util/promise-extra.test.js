@@ -18,9 +18,15 @@ const tasks = {
       }, 10);
     });
   },
-  b() { return new Promise(resolve => resolve('B')); },
-  c() { return new Promise(resolve => resolve('C')); },
-  d() { return new Promise((resolve, reject) => reject('D')); },
+  b() {
+    return new Promise(resolve => resolve('B'));
+  },
+  c() {
+    return new Promise(resolve => resolve('C'));
+  },
+  d() {
+    return new Promise((resolve, reject) => reject('D'));
+  },
 };
 
 describe('bin/lib/util/promise-extra', () => {
@@ -36,9 +42,7 @@ describe('bin/lib/util/promise-extra', () => {
     });
 
     it('should be rejected', () => {
-      const output = Promise.allSync([
-        { fn: tasks.d },
-      ]);
+      const output = Promise.allSync([{ fn: tasks.d }]);
 
       return expect(output).to.eventually.be.rejectedWith('D');
     });
@@ -56,9 +60,7 @@ describe('bin/lib/util/promise-extra', () => {
     });
 
     it('should be rejected', () => {
-      const output = Promise.allAsync([
-        { fn: tasks.d },
-      ]);
+      const output = Promise.allAsync([{ fn: tasks.d }]);
 
       return expect(output).to.eventually.be.rejected;
     });

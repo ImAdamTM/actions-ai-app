@@ -41,28 +41,30 @@ describe('bin/api/tasks/update', () => {
   let fsWriteStub;
 
   beforeEach(() => {
-    requestPutStub = sinon.stub(request, 'put')
+    requestPutStub = sinon.stub(request, 'put').callsFake((props, callback) => {
+      callback(null, '', { status: { code: 200 } });
+    });
+
+    requestPostStub = sinon
+      .stub(request, 'post')
       .callsFake((props, callback) => {
         callback(null, '', { status: { code: 200 } });
       });
 
-    requestPostStub = sinon.stub(request, 'post')
-      .callsFake((props, callback) => {
-        callback(null, '', { status: { code: 200 } });
-      });
-
-    fsEnsureStub = sinon.stub(fs, 'ensureFile')
+    fsEnsureStub = sinon
+      .stub(fs, 'ensureFile')
       .callsFake((inputPath, callback) => {
         callback('', null);
       });
 
-    fsEnsureDirSyncStub = sinon.stub(fs, 'ensureDirSync')
-      .callsFake(() => {});
+    fsEnsureDirSyncStub = sinon.stub(fs, 'ensureDirSync').callsFake(() => {});
 
-    fsReadStub = sinon.stub(fs, 'readJson')
+    fsReadStub = sinon
+      .stub(fs, 'readJson')
       .callsFake(() => Promise.resolve({ test: 'test' }));
 
-    fsWriteStub = sinon.stub(fs, 'writeJson')
+    fsWriteStub = sinon
+      .stub(fs, 'writeJson')
       .callsFake(() => Promise.resolve());
   });
 
@@ -77,7 +79,8 @@ describe('bin/api/tasks/update', () => {
 
   describe('updateIntents()', () => {
     it('attempts to update the intents', () =>
-      expect(updateIntents(mockIntentsProps, mockApiAiIntents))
+      expect(
+        updateIntents(mockIntentsProps, mockApiAiIntents))
         .to.eventually.eq('success'));
 
     it('attempts to update the intents with unmatched', () => {
@@ -88,16 +91,18 @@ describe('bin/api/tasks/update', () => {
         intents: new Map([['unmatched', { name: 'unmatched' }]]),
       };
 
-      return expect(updateIntents(props, mockApiAiIntents))
-        .to.eventually.eq('success');
+      return expect(updateIntents(props, mockApiAiIntents)).to.eventually.eq(
+        'success');
     });
 
     it('handles rejection on failure to write cache', () => {
       fsWriteStub.restore();
-      fsWriteStub = sinon.stub(fs, 'writeJson')
+      fsWriteStub = sinon
+        .stub(fs, 'writeJson')
         .callsFake(() => Promise.reject('cache write error'));
 
-      return expect(updateIntents(mockIntentsProps, mockApiAiIntents))
+      return expect(
+        updateIntents(mockIntentsProps, mockApiAiIntents))
         .to.eventually.be.rejectedWith('cache write error');
     });
 
@@ -105,59 +110,64 @@ describe('bin/api/tasks/update', () => {
       requestPutStub.restore();
       requestPostStub.restore();
 
-      requestPutStub = sinon.stub(request, 'put')
+      requestPutStub = sinon
+        .stub(request, 'put')
         .callsFake((props, callback) => {
           callback('request error', '', { status: { code: 400 } });
         });
 
-      requestPostStub = sinon.stub(request, 'post')
+      requestPostStub = sinon
+        .stub(request, 'post')
         .callsFake((props, callback) => {
           callback('request error', '', { status: { code: 400 } });
         });
 
-      return expect(updateIntents(mockIntentsProps, mockApiAiIntents))
-        .to.be.rejected;
+      return expect(updateIntents(mockIntentsProps, mockApiAiIntents)).to.be
+        .rejected;
     });
 
     it('handles rejection on bad update status from api.ai', () => {
       requestPutStub.restore();
       requestPostStub.restore();
 
-      requestPutStub = sinon.stub(request, 'put')
+      requestPutStub = sinon
+        .stub(request, 'put')
         .callsFake((props, callback) => {
           callback(null, '', { status: { code: 400 } });
         });
 
-      requestPostStub = sinon.stub(request, 'post')
+      requestPostStub = sinon
+        .stub(request, 'post')
         .callsFake((props, callback) => {
           callback(null, '', { status: { code: 400 } });
         });
 
-      return expect(updateIntents(mockIntentsProps, mockApiAiIntents))
-        .to.be.rejected;
+      return expect(updateIntents(mockIntentsProps, mockApiAiIntents)).to.be
+        .rejected;
     });
   });
 
   describe('updateIntent()', () => {
     it('skips update if local and cache match', () => {
       fsReadStub.restore();
-      fsReadStub = sinon.stub(fs, 'readJson')
+      fsReadStub = sinon
+        .stub(fs, 'readJson')
         .callsFake(() => Promise.resolve({ name: 'test' }));
 
-      return expect(updateIntent({ name: 'test' }, 'test', mockIntentsProps))
+      return expect(
+        updateIntent({ name: 'test' }, 'test', mockIntentsProps))
         .to.eventually.eq('skipped');
     });
 
     it('switches to POST method if intent not found on api.ai', () => {
-      updateIntent({ name: 'unmatched' }, null, mockIntentsProps)
-        .then(() => expect(requestPostStub).to.have.been.called);
+      updateIntent({ name: 'unmatched' }, null, mockIntentsProps).then(
+        () => expect(requestPostStub).to.have.been.called);
     });
   });
 
   describe('updateEntities()', () => {
     it('attempts to update the entities', () => {
-      expect(updateEntities(mockEntitiesProps))
-        .to.eventually.eq('success');
+      expect(updateEntities(mockEntitiesProps)).to.eventually.eq('success');
     });
 
     it('expects to resolve immediately when no entities to update', () => {
@@ -168,13 +178,14 @@ describe('bin/api/tasks/update', () => {
         entities: new Map([]),
       };
 
-      return expect(updateEntities(props))
-        .to.eventually.eq('no update required');
+      return expect(updateEntities(props)).to.eventually.eq(
+        'no update required');
     });
 
     it('handles rejection on failure to write cache when skipping', () => {
       fsWriteStub.restore();
-      fsWriteStub = sinon.stub(fs, 'writeJson')
+      fsWriteStub = sinon
+        .stub(fs, 'writeJson')
         .callsFake(() => Promise.reject('cache write error poo'));
 
       const props = {
@@ -184,14 +195,14 @@ describe('bin/api/tasks/update', () => {
         entities: new Map(),
       };
 
-      return expect(updateEntities(props))
-        .to.eventually.be.rejectedWith('cache write error');
+      return expect(updateEntities(props)).to.eventually.be.rejectedWith(
+        'cache write error');
     });
-
 
     it('handles rejection on failure to write cache', () => {
       fsWriteStub.restore();
-      fsWriteStub = sinon.stub(fs, 'writeJson')
+      fsWriteStub = sinon
+        .stub(fs, 'writeJson')
         .callsFake(() => Promise.reject('cache write error poo'));
 
       const props = {
@@ -201,53 +212,56 @@ describe('bin/api/tasks/update', () => {
         entities: new Map([['test', { test: 'unmatched' }]]),
       };
 
-      return expect(updateEntities(props))
-        .to.eventually.be.rejectedWith('cache write error');
+      return expect(updateEntities(props)).to.eventually.be.rejectedWith(
+        'cache write error');
     });
 
     it('skips update if local and cache match', () => {
       fsReadStub.restore();
-      fsReadStub = sinon.stub(fs, 'readJson')
+      fsReadStub = sinon
+        .stub(fs, 'readJson')
         .callsFake(() => Promise.resolve([{ test: 'test' }]));
 
-      return expect(updateEntities(mockEntitiesProps))
-        .to.eventually.eq('skipped');
+      return expect(updateEntities(mockEntitiesProps)).to.eventually.eq(
+        'skipped');
     });
 
     it('handles rejection on invalid update response from from api.ai', () => {
       requestPutStub.restore();
       requestPostStub.restore();
 
-      requestPutStub = sinon.stub(request, 'put')
+      requestPutStub = sinon
+        .stub(request, 'put')
         .callsFake((props, callback) => {
           callback('request error', '', { status: { code: 400 } });
         });
 
-      requestPostStub = sinon.stub(request, 'post')
+      requestPostStub = sinon
+        .stub(request, 'post')
         .callsFake((props, callback) => {
           callback('request error', '', { status: { code: 400 } });
         });
 
-      return expect(updateEntities(mockEntitiesProps))
-        .to.be.rejected;
+      return expect(updateEntities(mockEntitiesProps)).to.be.rejected;
     });
 
     it('handles rejection on bad update status from api.ai', () => {
       requestPutStub.restore();
       requestPostStub.restore();
 
-      requestPutStub = sinon.stub(request, 'put')
+      requestPutStub = sinon
+        .stub(request, 'put')
         .callsFake((props, callback) => {
           callback(null, '', { status: { code: 400 } });
         });
 
-      requestPostStub = sinon.stub(request, 'post')
+      requestPostStub = sinon
+        .stub(request, 'post')
         .callsFake((props, callback) => {
           callback(null, '', { status: { code: 400 } });
         });
 
-      return expect(updateEntities(mockEntitiesProps))
-        .to.be.rejected;
+      return expect(updateEntities(mockEntitiesProps)).to.be.rejected;
     });
   });
 });

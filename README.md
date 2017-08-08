@@ -28,13 +28,13 @@
 
 A Node module to simplify the development of Actions on Google + API.ai applications for Google Assistant.
 
-[![travis build](https://img.shields.io/travis/ImAdamTM/actions-ai-app.svg?style=flat-square)](https://github.com/ImAdamTM/actions-ai-app)
+[![travis build](https://img.shields.io/travis/ImAdamTM/actions-ai-app.svg?style=flat-square)](https://travis-ci.org/ImAdamTM/actions-ai-app/)
 [![release](https://img.shields.io/github/release/ImAdamTM/actions-ai-app.svg?style=flat-square)](https://github.com/ImAdamTM/actions-ai-app)
 [![Coverage Status](https://coveralls.io/repos/github/ImAdamTM/actions-ai-app/badge.svg?branch=master)](https://coveralls.io/github/ImAdamTM/actions-ai-app?branch=master&style=flat-square)
-[![npm](https://img.shields.io/npm/dw/actions-ai-app.svg)](https://www.npmjs.com/package/actions-ai-app)
+[![npm](https://img.shields.io/npm/dw/actions-ai-app.svg?style=flat-square)](https://www.npmjs.com/package/actions-ai-app)
+[![code style](https://img.shields.io/badge/style-airbnb-fd5c63.svg?style=flat-square&label=code%20style)](https://github.com/airbnb/javascript)
 [![license](https://img.shields.io/github/license/ImAdamTM/actions-ai-app.svg?style=flat-square)](https://github.com/ImAdamTM/actions-ai-app)
 [![Twitter Follow](https://img.shields.io/twitter/follow/imadamtm.svg?style=social&label=Follow)](https://twitter.com/intent/follow?screen_name=imadamtm)
-
 
 ## Introduction
 

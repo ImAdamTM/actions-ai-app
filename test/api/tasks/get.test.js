@@ -5,10 +5,7 @@ const chaiAsPromised = require('chai-as-promised');
 const sinon = require('sinon');
 const sinonChai = require('sinon-chai');
 const request = require('request');
-const {
-  getIntents,
-  getEntities,
-} = require('../../../bin/api/tasks/get');
+const { getIntents, getEntities } = require('../../../bin/api/tasks/get');
 
 chai.use(chaiAsPromised);
 chai.use(sinonChai);
@@ -35,9 +32,8 @@ describe('bin/api/tasks/get', () => {
   });
 
   describe('getIntents()', () => {
-    it('attempts to load intents from api.ai', () => expect(
-      getIntents(mockProps))
-      .to.eventually.be.fulfilled);
+    it('attempts to load intents from api.ai', () =>
+      expect(getIntents(mockProps)).to.eventually.be.fulfilled);
 
     it('rejects on api.ai error response', () => {
       requestStub.restore();
@@ -46,8 +42,8 @@ describe('bin/api/tasks/get', () => {
         callback('request error', '', { data: [] });
       });
 
-      return expect(getIntents(mockProps))
-        .to.eventually.be.rejectedWith('request error');
+      return expect(getIntents(mockProps)).to.eventually.be.rejectedWith(
+        'request error');
     });
 
     it('rejects when api.ai response bad', () => {
@@ -57,8 +53,8 @@ describe('bin/api/tasks/get', () => {
         callback(null, '', null);
       });
 
-      return expect(getIntents(mockProps))
-        .to.eventually.be.rejectedWith('No data');
+      return expect(getIntents(mockProps)).to.eventually.be.rejectedWith(
+        'No data');
     });
 
     it('rejects when api.ai status invalid', () => {
@@ -68,8 +64,9 @@ describe('bin/api/tasks/get', () => {
         callback(null, '', { status: { code: 400 } });
       });
 
-      return expect(getIntents(mockProps))
-        .to.eventually.be.rejectedWith({ status: { code: 400 } });
+      return expect(getIntents(mockProps)).to.eventually.be.rejectedWith({
+        status: { code: 400 },
+      });
     });
   });
 
@@ -81,8 +78,8 @@ describe('bin/api/tasks/get', () => {
         callback('request error', '', { data: [] });
       });
 
-      return expect(getEntities(mockProps))
-        .to.eventually.be.rejectedWith('request error');
+      return expect(getEntities(mockProps)).to.eventually.be.rejectedWith(
+        'request error');
     });
 
     it('rejects when api.ai response bad', () => {
@@ -92,8 +89,8 @@ describe('bin/api/tasks/get', () => {
         callback(null, '', null);
       });
 
-      return expect(getEntities(mockProps))
-        .to.eventually.be.rejectedWith('No data');
+      return expect(getEntities(mockProps)).to.eventually.be.rejectedWith(
+        'No data');
     });
 
     it('rejects when api.ai status invalid', () => {
@@ -103,8 +100,7 @@ describe('bin/api/tasks/get', () => {
         callback(null, '', { status: { code: 400 } });
       });
 
-      return expect(getEntities(mockProps))
-        .to.eventually.be.rejected;
+      return expect(getEntities(mockProps)).to.eventually.be.rejected;
     });
   });
 });

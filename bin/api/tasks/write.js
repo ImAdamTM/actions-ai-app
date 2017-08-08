@@ -16,7 +16,8 @@ exports.writeIntentToCache = (intent, cachePath) => {
   const outputPath = path.join(cachePath, '/intents/', `${intent.name}.json`);
 
   return new Promise((resolve, reject) => {
-    fs.writeJson(outputPath, intent)
+    fs
+      .writeJson(outputPath, intent)
       .then(() => resolve())
       .catch(err => reject(err));
   });
@@ -34,7 +35,8 @@ exports.writeEntitiesToCache = (entities, cachePath) => {
   const outputPath = path.join(cachePath, 'entities.json');
 
   return new Promise((resolve, reject) => {
-    fs.writeJson(outputPath, entities)
+    fs
+      .writeJson(outputPath, entities)
       .then(() => resolve())
       .catch(err => reject(err));
   });

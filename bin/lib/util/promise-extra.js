@@ -12,12 +12,16 @@ Promise.allSync = (tasks, context) => {
   const final = [];
 
   return new Promise((resolve, reject) => {
-    tasks.reduce((cur, next) => cur.then((res) => {
-      final.push(res);
-      const args = next.args || [];
+    tasks
+      .reduce(
+        (cur, next) =>
+          cur.then((res) => {
+            final.push(res);
+            const args = next.args || [];
 
-      return next.fn.bind(context, ...args)();
-    }), Promise.resolve())
+            return next.fn.bind(context, ...args)();
+          }),
+        Promise.resolve())
       .then((...res) => {
         final.shift();
 
@@ -44,10 +48,7 @@ Promise.allAsync = (tasks, context) => {
   });
 
   return new Promise((resolve, reject) => {
-    Promise
-      .all(final)
-      .then(res => resolve(res))
-      .catch(err => reject(err));
+    Promise.all(final).then(res => resolve(res)).catch(err => reject(err));
   });
 };
 

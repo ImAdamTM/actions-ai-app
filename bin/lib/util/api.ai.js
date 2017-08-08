@@ -21,8 +21,9 @@ exports.compileUserSays = function compileUserSays(statement) {
         });
       }
 
-      const entity = /@{([^}]+)\}/g.exec(str
-        .substring(exec.index, reg.lastIndex))[1].split(':');
+      const entity = /@{([^}]+)\}/g
+        .exec(str.substring(exec.index, reg.lastIndex))[1]
+        .split(':');
 
       // When using a `sys` (default) entity, we need to adjust the format
       if (entity[0].indexOf('sys.') > -1) {
@@ -89,25 +90,27 @@ exports.compileUserSays = function compileUserSays(statement) {
  * @private
  */
 exports.configureIntent = (key, config) => {
-  const output = Object.assign({
-    id: key,
-    name: key,
-    auto: true,
-    responses: [
-      {
-        resetContexts: false,
-        action: key,
-        parameters: [],
-      },
-    ],
-    contexts: [],
-    affectedContexts: [],
-    userSays: [],
-    webhookUsed: true,
-    webhookForSlotFilling: true,
-    fallbackIntent: false,
-    priority: 500000,
-  }, config);
+  const output = Object.assign(
+    {
+      id: key,
+      name: key,
+      auto: true,
+      responses: [
+        {
+          resetContexts: false,
+          action: key,
+          parameters: [],
+        },
+      ],
+      contexts: [],
+      affectedContexts: [],
+      userSays: [],
+      webhookUsed: true,
+      webhookForSlotFilling: true,
+      fallbackIntent: false,
+      priority: 500000,
+    },
+    config);
 
   const entities = [];
 

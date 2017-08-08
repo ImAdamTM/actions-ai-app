@@ -4,13 +4,8 @@ const fs = require('fs-extra');
 const path = require('path');
 const chalk = require('chalk');
 const debug = require('../../lib/util/debug')('api:clean');
-const {
-  deleteIntents,
-  deleteEntities,
-} = require('./delete');
-const {
-  updateEntities,
-} = require('./update');
+const { deleteIntents, deleteEntities } = require('./delete');
+const { updateEntities } = require('./update');
 
 /**
  * Returns the list of files in a given directory, with the file extensions
@@ -46,7 +41,8 @@ exports.getCachedFileList = (filepath, cachePath) => {
         return;
       }
 
-      fs.readJson(inputPath)
+      fs
+        .readJson(inputPath)
         .then((res) => {
           if (!Array.isArray(res)) {
             resolve([]);
@@ -101,8 +97,8 @@ exports.getCleanList = (props, type, input, cached) => {
   }
 
   // Strip duplicates & return
-  return remove.filter((item, index, self) =>
-    self.findIndex(t => t.name === item.name) === index);
+  return remove.filter(
+    (item, index, self) => self.findIndex(t => t.name === item.name) === index);
 };
 
 /**
@@ -118,10 +114,10 @@ exports.cleanIntents = (props, intents) => {
   const cached = exports.getCachedDirectoryList('intents', props.cache);
   const remove = exports.getCleanList(props, 'intents', intents, cached);
   const debugSinglePlural = remove.length === 1 ? 'intent' : 'intents';
-  const debugInfo =
-    `Cleaning ${chalk.bold.magenta(remove.length)} ${debugSinglePlural}...`;
-  const debugList = `${
-    remove.map(intent => `\r\n- ${chalk.bold.yellow(intent.name)}`)}`;
+  const debugInfo = `Cleaning ${chalk.bold.magenta(
+    remove.length)} ${debugSinglePlural}...`;
+  const debugList = `${remove.map(
+    intent => `\r\n- ${chalk.bold.yellow(intent.name)}`)}`;
 
   debug(debugInfo + debugList);
 
@@ -137,35 +133,41 @@ exports.cleanIntents = (props, intents) => {
  * on completion
  * @private
  */
-exports.cleanEntities = (props, entities, softFail) => new Promise((resolve, reject) => {
-  exports.getCachedFileList('entities.json', props.cache)
-    .then((cached) => {
-      const remove = exports.getCleanList(props, 'entities', entities, cached);
-      const debugSinglePlural = remove.length === 1 ? 'entity' : 'entities';
-      const debugInfo =
-        `Cleaning ${chalk.bold.magenta(remove.length)} ${debugSinglePlural}...`;
-      const debugList = `${
-        remove.map(intent => `\r\n- ${chalk.bold.yellow(intent.name)}`)}`;
+exports.cleanEntities = (props, entities, softFail) =>
+  new Promise((resolve, reject) => {
+    exports
+      .getCachedFileList('entities.json', props.cache)
+      .then((cached) => {
+        const remove = exports.getCleanList(
+          props,
+          'entities',
+          entities,
+          cached);
+        const debugSinglePlural = remove.length === 1 ? 'entity' : 'entities';
+        const debugInfo = `Cleaning ${chalk.bold.magenta(
+          remove.length)} ${debugSinglePlural}...`;
+        const debugList = `${remove.map(
+          intent => `\r\n- ${chalk.bold.yellow(intent.name)}`)}`;
 
-      if (softFail) debug(debugInfo + debugList);
+        if (softFail) debug(debugInfo + debugList);
 
-      deleteEntities(remove, props, entities)
-        .then(() => {
-          updateEntities(props)
-            .then(() => resolve())
-            .catch(err => reject(err));
-        })
-        .catch((err) => {
-          if (softFail) {
-            if (err.status && err.status.errorDetails) {
-              debug(`${err.status.errorDetails}. Retrying...`, 'red');
+        deleteEntities(remove, props, entities)
+          .then(() => {
+            updateEntities(props)
+              .then(() => resolve())
+              .catch(err => reject(err));
+          })
+          .catch((err) => {
+            if (softFail) {
+              if (err.status && err.status.errorDetails) {
+                debug(`${err.status.errorDetails}. Retrying...`, 'red');
+              }
+
+              resolve('retry_entities');
+            } else {
+              reject(err);
             }
-
-            resolve('retry_entities');
-          } else {
-            reject(err);
-          }
-        });
-    })
-    .catch(err => reject(err));
-});
+          });
+      })
+      .catch(err => reject(err));
+  });

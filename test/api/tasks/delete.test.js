@@ -34,9 +34,11 @@ describe('bin/api/tasks/delete', () => {
     requestStub = sinon.stub(request, 'delete').callsFake((props, callback) => {
       callback(null, '', { status: { code: 200 } });
     });
-    fsStub = sinon.stub(fs, 'remove').callsFake(() => new Promise((resolve) => {
-      resolve();
-    }));
+    fsStub = sinon.stub(fs, 'remove').callsFake(
+      () =>
+        new Promise((resolve) => {
+          resolve();
+        }));
   });
 
   afterEach(() => {
@@ -49,7 +51,8 @@ describe('bin/api/tasks/delete', () => {
       mockLocalEntities = [{ name: 'test' }];
       mockApiAiEntities = [{ name: 'test' }];
 
-      return expect(deleteEntities(mockLocalEntities, mockProps, mockApiAiEntities))
+      return expect(
+        deleteEntities(mockLocalEntities, mockProps, mockApiAiEntities))
         .to.eventually.be.fulfilled;
     });
 
@@ -57,46 +60,56 @@ describe('bin/api/tasks/delete', () => {
       mockLocalEntities = [{ name: 'test' }];
       mockApiAiEntities = [{ name: 'unmatch' }];
 
-      return expect(deleteEntities(mockLocalEntities, mockProps, mockApiAiEntities))
+      return expect(
+        deleteEntities(mockLocalEntities, mockProps, mockApiAiEntities))
         .to.eventually.be.fulfilled;
     });
 
     it('rejects when api.ai delete error', () => {
       requestStub.restore();
-      requestStub = sinon.stub(request, 'delete').callsFake((props, callback) => {
-        callback('request error', '', { status: { code: 400 } });
-      });
+      requestStub = sinon
+        .stub(request, 'delete')
+        .callsFake((props, callback) => {
+          callback('request error', '', { status: { code: 400 } });
+        });
 
       mockLocalEntities = [{ name: 'test' }];
       mockApiAiEntities = [{ name: 'test' }];
 
-      return expect(deleteEntities(mockLocalEntities, mockProps, mockApiAiEntities))
+      return expect(
+        deleteEntities(mockLocalEntities, mockProps, mockApiAiEntities))
         .to.eventually.be.rejectedWith('request error');
     });
 
     it('rejects when api.ai status invalid', () => {
       requestStub.restore();
-      requestStub = sinon.stub(request, 'delete').callsFake((props, callback) => {
-        callback(null, '', null);
-      });
+      requestStub = sinon
+        .stub(request, 'delete')
+        .callsFake((props, callback) => {
+          callback(null, '', null);
+        });
 
       mockLocalEntities = [{ name: 'test' }];
       mockApiAiEntities = [{ name: 'test' }];
 
-      return expect(deleteEntities(mockLocalEntities, mockProps, mockApiAiEntities))
+      return expect(
+        deleteEntities(mockLocalEntities, mockProps, mockApiAiEntities))
         .to.eventually.be.rejectedWith(null);
     });
 
     it('rejects when api.ai status code bad', () => {
       requestStub.restore();
-      requestStub = sinon.stub(request, 'delete').callsFake((props, callback) => {
-        callback(null, '', { status: 400 });
-      });
+      requestStub = sinon
+        .stub(request, 'delete')
+        .callsFake((props, callback) => {
+          callback(null, '', { status: 400 });
+        });
 
       mockLocalEntities = [{ name: 'test' }];
       mockApiAiEntities = [{ name: 'test' }];
 
-      return expect(deleteEntities(mockLocalEntities, mockProps, mockApiAiEntities))
+      return expect(
+        deleteEntities(mockLocalEntities, mockProps, mockApiAiEntities))
         .to.eventually.be.rejectedWith({ status: 400 });
     });
   });
@@ -106,7 +119,8 @@ describe('bin/api/tasks/delete', () => {
       mockLocalIntents = [{ name: 'test' }];
       mockApiAiIntents = [{ name: 'test' }];
 
-      return expect(deleteIntents(mockLocalIntents, mockProps, mockApiAiIntents))
+      return expect(
+        deleteIntents(mockLocalIntents, mockProps, mockApiAiIntents))
         .to.eventually.be.fulfilled;
     });
 
@@ -120,67 +134,80 @@ describe('bin/api/tasks/delete', () => {
 
     it('rejects when api.ai delete error', () => {
       requestStub.restore();
-      requestStub = sinon.stub(request, 'delete').callsFake((props, callback) => {
-        callback('request error', '', { status: { code: 400 } });
-      });
+      requestStub = sinon
+        .stub(request, 'delete')
+        .callsFake((props, callback) => {
+          callback('request error', '', { status: { code: 400 } });
+        });
 
       mockLocalIntents = [{ name: 'test' }];
       mockApiAiIntents = [{ name: 'test' }];
 
-      return expect(deleteIntents(mockLocalIntents, mockProps, mockApiAiIntents))
+      return expect(
+        deleteIntents(mockLocalIntents, mockProps, mockApiAiIntents))
         .to.eventually.be.rejectedWith('request error');
     });
 
     it('rejects when api.ai status invalid', () => {
       requestStub.restore();
-      requestStub = sinon.stub(request, 'delete').callsFake((props, callback) => {
-        callback(null, '', null);
-      });
+      requestStub = sinon
+        .stub(request, 'delete')
+        .callsFake((props, callback) => {
+          callback(null, '', null);
+        });
 
       mockLocalIntents = [{ name: 'test' }];
       mockApiAiIntents = [{ name: 'test' }];
 
-      return expect(deleteIntents(mockLocalIntents, mockProps, mockApiAiIntents))
+      return expect(
+        deleteIntents(mockLocalIntents, mockProps, mockApiAiIntents))
         .to.eventually.be.rejectedWith(null);
     });
 
     it('rejects when api.ai status code bad', () => {
       requestStub.restore();
-      requestStub = sinon.stub(request, 'delete').callsFake((props, callback) => {
-        callback(null, '', { status: 400 });
-      });
+      requestStub = sinon
+        .stub(request, 'delete')
+        .callsFake((props, callback) => {
+          callback(null, '', { status: 400 });
+        });
 
       mockLocalIntents = [{ name: 'test' }];
       mockApiAiIntents = [{ name: 'test' }];
 
-      expect(deleteIntents(mockLocalIntents, mockProps, mockApiAiIntents))
+      expect(
+        deleteIntents(mockLocalIntents, mockProps, mockApiAiIntents))
         .to.eventually.be.rejectedWith({ status: 400 });
     });
 
-    it('rejects when fails to delete local intent cache after api.ai delete', () => {
+    it('reject when fail to delete intent cache after api.ai delete', () => {
       fsStub.restore();
-      fsStub = sinon.stub(fs, 'remove').callsFake(() => new Promise(
-        (resolve, reject) => {
-          reject('cache error');
-        }));
+      fsStub = sinon.stub(fs, 'remove').callsFake(
+        () =>
+          new Promise((resolve, reject) => {
+            reject('cache error');
+          }));
 
       mockLocalIntents = [{ name: 'test' }];
       mockApiAiIntents = [{ name: 'test' }];
 
-      return expect(deleteIntents(mockLocalIntents, mockProps, mockApiAiIntents))
+      return expect(
+        deleteIntents(mockLocalIntents, mockProps, mockApiAiIntents))
         .to.eventually.be.rejectedWith('cache error');
     });
 
     it('rejects when fails to delete local intent cache', () => {
       fsStub.restore();
-      fsStub = sinon.stub(fs, 'remove').callsFake(() => new Promise(
-        (resolve, reject) => {
-          reject('cache error');
-        }));
+      fsStub = sinon.stub(fs, 'remove').callsFake(
+        () =>
+          new Promise((resolve, reject) => {
+            reject('cache error');
+          }));
 
       mockLocalIntents = [{ name: 'test' }];
 
-      return expect(deleteIntents(mockLocalIntents, mockProps, []))
+      return expect(
+        deleteIntents(mockLocalIntents, mockProps, []))
         .to.eventually.be.rejectedWith('cache error');
     });
   });
@@ -189,7 +216,11 @@ describe('bin/api/tasks/delete', () => {
     it('generates a task array', () => {
       mockLocalIntents = [{ name: 'test' }];
       mockApiAiIntents = [{ name: 'test' }];
-      const tasks = createTasks(mockLocalIntents, mockProps, mockApiAiIntents, 'deleteIntent');
+      const tasks = createTasks(
+        mockLocalIntents,
+        mockProps,
+        mockApiAiIntents,
+        'deleteIntent');
 
       expect(tasks).to.be.an('array');
     });
@@ -197,7 +228,11 @@ describe('bin/api/tasks/delete', () => {
     it('accepts task as string', () => {
       mockLocalIntents = ['test'];
       mockApiAiIntents = [{ name: 'test' }];
-      const tasks = createTasks(mockLocalIntents, mockProps, mockApiAiIntents, 'deleteIntent');
+      const tasks = createTasks(
+        mockLocalIntents,
+        mockProps,
+        mockApiAiIntents,
+        'deleteIntent');
 
       expect(tasks).to.be.an('array');
     });

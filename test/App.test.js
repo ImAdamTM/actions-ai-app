@@ -41,34 +41,39 @@ describe('bin/App', () => {
       callback(null, '', [{ id: 'test', name: 'test' }]);
     });
 
-    requestPutStub = sinon.stub(request, 'put')
+    requestPutStub = sinon.stub(request, 'put').callsFake((props, callback) => {
+      callback(null, '', { status: { code: 200 } });
+    });
+
+    requestPostStub = sinon
+      .stub(request, 'post')
       .callsFake((props, callback) => {
         callback(null, '', { status: { code: 200 } });
       });
 
-    requestPostStub = sinon.stub(request, 'post')
-      .callsFake((props, callback) => {
-        callback(null, '', { status: { code: 200 } });
-      });
-
-    fsEnsureStub = sinon.stub(fs, 'ensureFile')
+    fsEnsureStub = sinon
+      .stub(fs, 'ensureFile')
       .callsFake((inputPath, callback) => {
         callback('', null);
       });
 
-    fsReadStub = sinon.stub(fs, 'readJson')
+    fsReadStub = sinon
+      .stub(fs, 'readJson')
       .callsFake(() => Promise.resolve({ test: 'test' }));
 
-    fsReaddirSyncStub = sinon.stub(fs, 'readdirSync')
+    fsReaddirSyncStub = sinon
+      .stub(fs, 'readdirSync')
       .callsFake(() => ['a.json', 'b.json', 'c.json']);
 
-    fsWriteStub = sinon.stub(fs, 'writeJson')
+    fsWriteStub = sinon
+      .stub(fs, 'writeJson')
       .callsFake(() => Promise.resolve());
 
-    fsRemoveStub = sinon.stub(fs, 'remove')
-      .callsFake(() => new Promise((resolve) => {
-        resolve();
-      }));
+    fsRemoveStub = sinon.stub(fs, 'remove').callsFake(
+      () =>
+        new Promise((resolve) => {
+          resolve();
+        }));
   });
 
   afterEach(() => {
@@ -128,8 +133,8 @@ describe('bin/App', () => {
         update: true,
       };
 
-      return expect(app.start(props))
-        .to.eventually.eq('NO_CACHE_PATH_SPECIFIED');
+      return expect(app.start(props)).to.eventually.eq(
+        'NO_CACHE_PATH_SPECIFIED');
     });
 
     it('expects api.ai update to fail when no api.ai token specified', () => {
@@ -141,15 +146,16 @@ describe('bin/App', () => {
         update: true,
       };
 
-      return expect(app.start(props))
-        .to.eventually.eq('NO_TOKEN_SPECIFIED');
+      return expect(app.start(props)).to.eventually.eq('NO_TOKEN_SPECIFIED');
     });
 
     it('expects api.ai update to fail on update rejection', () => {
       requestGetStub.restore();
-      requestGetStub = sinon.stub(request, 'get').callsFake((props, callback) => {
-        callback('bad request', '', [{ id: 'test', name: 'test' }]);
-      });
+      requestGetStub = sinon
+        .stub(request, 'get')
+        .callsFake((props, callback) => {
+          callback('bad request', '', [{ id: 'test', name: 'test' }]);
+        });
 
       const app = new App({
         APIAIToken: '123',
@@ -160,8 +166,7 @@ describe('bin/App', () => {
         update: true,
       };
 
-      return expect(app.start(props))
-        .to.eventually.eq('UPDATE_FAIL');
+      return expect(app.start(props)).to.eventually.eq('UPDATE_FAIL');
     });
   });
 
@@ -174,8 +179,8 @@ describe('bin/App', () => {
       mockRequest = new MockRequest(headers, body);
       mockResponse = new MockResponse();
 
-      expect(app.handleRequest(mockRequest, mockResponse))
-        .to.eq('REQUEST_HANDLED');
+      expect(app.handleRequest(mockRequest, mockResponse)).to.eq(
+        'REQUEST_HANDLED');
     });
   });
 });

@@ -30,7 +30,10 @@ exports.intent = function intent(key, config = null, actionCall = null) {
   let action;
 
   if (this.started) {
-    debug(chalk.bold(`Intents may only be added before start() is called! ('${key}')`), 'red');
+    debug(
+      chalk.bold(
+        `Intents may only be added before start() is called! ('${key}')`),
+      'red');
     return this;
   }
 
@@ -57,19 +60,24 @@ exports.intent = function intent(key, config = null, actionCall = null) {
     throw new Error('An intent action method must be specified');
   }
 
-  const intentAction = (app, ssml) => new Promise((resolve) => {
-    if (!app.APP_OVERRIDE) {
-      app.tellPrimary = app.tell;
-      app.askPrimary = app.ask;
-    }
+  const intentAction = (app, ssml) =>
+    new Promise((resolve) => {
+      if (!app.APP_OVERRIDE) {
+        app.tellPrimary = app.tell;
+        app.askPrimary = app.ask;
+      }
 
-    app.tell = (res) => { resolve({ call: 'tell', res }); };
-    app.ask = (res) => { resolve({ call: 'ask', res }); };
+      app.tell = (res) => {
+        resolve({ call: 'tell', res });
+      };
+      app.ask = (res) => {
+        resolve({ call: 'ask', res });
+      };
 
-    app.APP_OVERRIDE = true;
+      app.APP_OVERRIDE = true;
 
-    action(app, ssml, resolve);
-  });
+      action(app, ssml, resolve);
+    });
 
   // Apply to the raw intent store
   this.intents.raw.set(key, intentAction);
@@ -87,12 +95,14 @@ exports.intent = function intent(key, config = null, actionCall = null) {
     return new Promise((resolve) => {
       intentAction(app, ssml)
         .then((out) => {
-          const output = Object.assign({
-            call: 'ask',
-            exclude: false,
-            res: null,
-            args: [],
-          }, out);
+          const output = Object.assign(
+            {
+              call: 'ask',
+              exclude: false,
+              res: null,
+              args: [],
+            },
+            out);
 
           app.store.dispatch('APP_INTENT_INVOKED', key);
 
@@ -102,7 +112,8 @@ exports.intent = function intent(key, config = null, actionCall = null) {
             app[`${output.call}Primary`](ssml.output(), ...output.args);
           } else if (output.res instanceof SSML) {
             app.store.dispatch('APP_OUTPUT', {
-              key, output: output.res.list(),
+              key,
+              output: output.res.list(),
             });
             app.store.dispatch('APP_FINISH_RESPONSE');
             app[`${output.call}Primary`](output.res.output(), ...output.args);
@@ -144,28 +155,29 @@ exports.invokeIntent = function invokeIntent(app, key) {
     return Promise.resolve(null);
   }
 
-  debug(chalk.yellow(
-    `Secondary Intent Action invoked: ${chalk.bold(`[${key}]`)}`));
+  debug(
+    chalk.yellow(`Secondary Intent Action invoked: ${chalk.bold(`[${key}]`)}`));
 
   app.store.dispatch('APP_INTENT_INVOKED', key);
 
   return new Promise((resolve) => {
-    this.intents.raw.get(key)(app, ssml).then((out) => {
-      app.tell = tellRestore;
-      app.ask = askRestore;
+    this.intents.raw.get(key)(app, ssml)
+      .then((out) => {
+        app.tell = tellRestore;
+        app.ask = askRestore;
 
-      if (!out) {
-        resolve(ssml);
-        return;
-      }
+        if (!out) {
+          resolve(ssml);
+          return;
+        }
 
-      if (out.res) {
-        resolve(out.res);
-        return;
-      }
+        if (out.res) {
+          resolve(out.res);
+          return;
+        }
 
-      resolve(out);
-    })
+        resolve(out);
+      })
       .catch((err) => {
         debug('Intent invocation error:', err, 'red');
         resolve(null);

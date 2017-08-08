@@ -20,11 +20,9 @@ const DEFAULTS = {
  */
 const registerEntity = (registry, key, terms, props) => {
   const options = Object.assign({}, DEFAULTS.ENTITY, props);
-  registry.set(key, Object.assign(
-    {},
-    DEFAULTS.ENTITY,
-    options,
-    {
+  registry.set(
+    key,
+    Object.assign({}, DEFAULTS.ENTITY, options, {
       name: key,
       entries: terms,
     }));
@@ -39,7 +37,10 @@ const registerEntity = (registry, key, terms, props) => {
  */
 exports.entity = function entity(key, terms, props) {
   if (this.started) {
-    debug(chalk.bold(`Entities may only be added before start() is called! ('${key}')`), 'red');
+    debug(
+      chalk.bold(
+        `Entities may only be added before start() is called! ('${key}')`),
+      'red');
     return this;
   }
 

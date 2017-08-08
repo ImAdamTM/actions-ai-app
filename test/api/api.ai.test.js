@@ -6,9 +6,7 @@ const sinon = require('sinon');
 const sinonChai = require('sinon-chai');
 const request = require('request');
 const fs = require('fs-extra');
-const {
-  updateAPIAI,
-} = require('../../bin/api/api.ai');
+const { updateAPIAI } = require('../../bin/api/api.ai');
 
 chai.use(chaiAsPromised);
 chai.use(sinonChai);
@@ -42,42 +40,47 @@ describe('bin/api/api.ai', () => {
       callback(null, '', [{ id: 'test', name: 'test' }]);
     });
 
-    requestPutStub = sinon.stub(request, 'put')
+    requestPutStub = sinon.stub(request, 'put').callsFake((props, callback) => {
+      callback(null, '', { status: { code: 200 } });
+    });
+
+    requestPostStub = sinon
+      .stub(request, 'post')
       .callsFake((props, callback) => {
         callback(null, '', { status: { code: 200 } });
       });
 
-    requestPostStub = sinon.stub(request, 'post')
+    requestDeleteStub = sinon
+      .stub(request, 'delete')
       .callsFake((props, callback) => {
         callback(null, '', { status: { code: 200 } });
       });
 
-    requestDeleteStub = sinon.stub(request, 'delete')
-      .callsFake((props, callback) => {
-        callback(null, '', { status: { code: 200 } });
-      });
-
-    fsEnsureStub = sinon.stub(fs, 'ensureFile')
+    fsEnsureStub = sinon
+      .stub(fs, 'ensureFile')
       .callsFake((inputPath, callback) => {
         callback('', null);
       });
 
-    fsEnsureDirSyncStub = sinon.stub(fs, 'ensureDirSync')
-      .callsFake(() => {});
+    fsEnsureDirSyncStub = sinon.stub(fs, 'ensureDirSync').callsFake(() => {});
 
-    fsReadStub = sinon.stub(fs, 'readJson')
+    fsReadStub = sinon
+      .stub(fs, 'readJson')
       .callsFake(() => Promise.resolve({ test: 'test' }));
 
-    fsReaddirSyncStub = sinon.stub(fs, 'readdirSync')
+    fsReaddirSyncStub = sinon
+      .stub(fs, 'readdirSync')
       .callsFake(() => ['a.json', 'b.json', 'c.json']);
 
-    fsWriteStub = sinon.stub(fs, 'writeJson')
+    fsWriteStub = sinon
+      .stub(fs, 'writeJson')
       .callsFake(() => Promise.resolve());
 
-    fsRemoveStub = sinon.stub(fs, 'remove')
-      .callsFake(() => new Promise((resolve) => {
-        resolve();
-      }));
+    fsRemoveStub = sinon.stub(fs, 'remove').callsFake(
+      () =>
+        new Promise((resolve) => {
+          resolve();
+        }));
   });
 
   afterEach(() => {
@@ -97,7 +100,7 @@ describe('bin/api/api.ai', () => {
     it('attempts to sync application data with api.ai', () =>
       expect(updateAPIAI(mockProps)).to.eventually.eq('success'));
 
-    it('attempts to syncs entire application data to api.ai with `cleanForceSync()`', () => {
+    it('syncs application data to api.ai with `cleanForceSync()`', () => {
       const props = {
         cache: './cache',
         cleanForceSync: true,
@@ -123,7 +126,8 @@ describe('bin/api/api.ai', () => {
 
     it('expects to fail when bad tasks fail', () => {
       fsWriteStub.restore();
-      fsWriteStub = sinon.stub(fs, 'writeJson')
+      fsWriteStub = sinon
+        .stub(fs, 'writeJson')
         .callsFake(() => Promise.reject());
 
       const props = {
@@ -149,10 +153,12 @@ describe('bin/api/api.ai', () => {
         entities: new Map(),
       };
 
-      requestDeleteStub = sinon.stub(request, 'delete')
+      requestDeleteStub = sinon
+        .stub(request, 'delete')
         .callsFake((innerProps, callback) => {
           requestDeleteStub.restore();
-          requestDeleteStub = sinon.stub(request, 'delete')
+          requestDeleteStub = sinon
+            .stub(request, 'delete')
             .callsFake((a, callbackInner) => {
               callbackInner(null, '', { status: { code: 200 } });
             });
@@ -174,7 +180,8 @@ describe('bin/api/api.ai', () => {
         entities: new Map(),
       };
 
-      requestDeleteStub = sinon.stub(request, 'delete')
+      requestDeleteStub = sinon
+        .stub(request, 'delete')
         .callsFake((innerProps, callback) => {
           callback(null, '', { status: { code: 400, errorDetails: 'Error' } });
         });

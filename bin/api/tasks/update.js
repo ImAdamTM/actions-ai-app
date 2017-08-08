@@ -7,10 +7,7 @@ const {
   compareIntentWithCache,
   compareEntitiesWithCache,
 } = require('./compare');
-const {
-  writeIntentToCache,
-  writeEntitiesToCache,
-} = require('./write');
+const { writeIntentToCache, writeEntitiesToCache } = require('./write');
 
 /**
  * Update an individual intent.
@@ -28,27 +25,28 @@ const {
  * @return {Promise} resolves/rejects on completion
  * @private
  */
-exports.updateIntent = (intent, updateID, props) => new Promise(
-  (resolve, reject) => {
+exports.updateIntent = (intent, updateID, props) =>
+  new Promise((resolve, reject) => {
     const updateMethod = updateID ? request.put : request.post;
-    const updateURL = updateID ?
-      `${props.apiURL}/intents/${updateID}` :
-      `${props.apiURL}/intents/`;
+    const updateURL = updateID
+      ? `${props.apiURL}/intents/${updateID}`
+      : `${props.apiURL}/intents/`;
 
-    compareIntentWithCache(intent, props.cache)
-      .then((matched) => {
-        if (matched) {
-          resolve('skipped');
-          return;
-        }
+    compareIntentWithCache(intent, props.cache).then((matched) => {
+      if (matched) {
+        resolve('skipped');
+        return;
+      }
 
-        debug('Updating intent:', chalk.bold.magenta(intent.name));
+      debug('Updating intent:', chalk.bold.magenta(intent.name));
 
-        updateMethod({
+      updateMethod(
+        {
           url: updateURL,
           auth: { bearer: props.apiToken },
           json: intent,
-        }, (err, out, stat) => {
+        },
+        (err, out, stat) => {
           if (err) {
             reject(err);
             return;
@@ -63,7 +61,7 @@ exports.updateIntent = (intent, updateID, props) => new Promise(
             .then(() => resolve())
             .catch(writeErr => reject(writeErr));
         });
-      });
+    });
   });
 
 /**
@@ -87,31 +85,32 @@ exports.updateEntities = (props) => {
   props.entities.forEach(entity => list.push(entity));
 
   return new Promise((resolve, reject) => {
-    compareEntitiesWithCache(list, props.cache)
-      .then((matched) => {
-        if (!matched && !list.length) {
-          // Ensure entity cache is in sync
-          writeEntitiesToCache(list, props.cache)
-            .then(() => resolve('no update required'))
-            .catch(writeErr => reject(writeErr));
+    compareEntitiesWithCache(list, props.cache).then((matched) => {
+      if (!matched && !list.length) {
+        // Ensure entity cache is in sync
+        writeEntitiesToCache(list, props.cache)
+          .then(() => resolve('no update required'))
+          .catch(writeErr => reject(writeErr));
 
-          return;
-        }
+        return;
+      }
 
-        if (matched) {
-          resolve('skipped');
-          return;
-        }
+      if (matched) {
+        resolve('skipped');
+        return;
+      }
 
-        debug('Updating entities...');
+      debug('Updating entities...');
 
-        request.put({
+      request.put(
+        {
           url: `${props.apiURL}/entities`,
           auth: {
             bearer: props.apiToken,
           },
           json: list,
-        }, (err, out, stat) => {
+        },
+        (err, out, stat) => {
           if (err) {
             reject(err);
             return;
@@ -126,7 +125,7 @@ exports.updateEntities = (props) => {
             .then(() => resolve('success'))
             .catch(writeErr => reject(writeErr));
         });
-      });
+    });
   });
 };
 
@@ -150,9 +149,6 @@ exports.updateIntents = (props, intents) => {
     tasks.push(exports.updateIntent(intent, match ? match.id : null, props));
   });
   return new Promise((resolve, reject) => {
-    Promise
-      .all(tasks)
-      .then(() => resolve('success'))
-      .catch(err => reject(err));
+    Promise.all(tasks).then(() => resolve('success')).catch(err => reject(err));
   });
 };

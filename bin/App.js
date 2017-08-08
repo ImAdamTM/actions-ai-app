@@ -133,7 +133,8 @@ class GoogleActionsAIApp {
      *     });
      * });
      *
-     * Outputs: `<speak>When user says hello, I will say this. I also have this to say.</speak>`
+     * Outputs: `<speak>When user says hello, I will say this.
+     * I also have this to say.</speak>`
      */
     this.invokeIntent = invokeIntent.bind(this);
 
@@ -162,11 +163,10 @@ class GoogleActionsAIApp {
     this.handleRequest = this.handleRequest.bind(this);
 
     if (this.props.debug) {
-      const namespace = typeof this.props.debug === 'boolean' ?
-        '*' :
-        this.props.debug;
-      process.env.ACTIONS_AI_APP_DEBUG = `${
-        process.env.ACTIONS_AI_APP_NAMESPACE}:${namespace}`;
+      const namespace =
+        typeof this.props.debug === 'boolean' ? '*' : this.props.debug;
+      process.env.ACTIONS_AI_APP_DEBUG = `${process.env
+        .ACTIONS_AI_APP_NAMESPACE}:${namespace}`;
     }
   }
 
@@ -175,8 +175,10 @@ class GoogleActionsAIApp {
    *
    * @param {Object} props the options used to start the app
    * @param {String} props.update (optional) whether to update on api.ai
-   * @param {Boolean} props.clean (optional) whether to clean up intents/entities
-   * @param {Boolean} props.cleanForceSync (optional) whether to force api.ai to be in sync
+   * @param {Boolean} props.clean (optional) whether to clean up
+   * intents/entities
+   * @param {Boolean} props.cleanForceSync (optional) whether to force api.ai
+   * to be in sync
    * @return {Promise} resolves on startup success
    */
   start(props) {
@@ -187,7 +189,8 @@ class GoogleActionsAIApp {
     return new Promise((resolve) => {
       if (options.update) {
         if (!this.props.cachePath) {
-          debug(chalk.bold('You must specify a `cachePath` to update API.AI'),
+          debug(
+            chalk.bold('You must specify a `cachePath` to update API.AI'),
             'red');
           this.ready = true;
           resolve('NO_CACHE_PATH_SPECIFIED');
@@ -195,8 +198,10 @@ class GoogleActionsAIApp {
         }
 
         if (!this.props.APIAIToken) {
-          debug(chalk.bold.magenta(
-            'You must specify a `APIAIToken` to update API.AI'), 'red');
+          debug(
+            chalk.bold.magenta(
+              'You must specify a `APIAIToken` to update API.AI'),
+            'red');
           this.ready = true;
           resolve('NO_TOKEN_SPECIFIED');
           return;
@@ -223,7 +228,11 @@ class GoogleActionsAIApp {
 
             /* istanbul ignore next */
             if (err.status && err.status.errorType === 'too_many_requests') {
-              debugApi('It appears you are trying to perform too many API.ai data insertion requests. Consider updating your intents/entities in chunks or wait a moment to try again.', 'red');
+              debugApi(
+                'It appears you are trying to perform too many API.ai data' +
+                  'insertion requests. Consider updating your' +
+                  'intents/entities in chunks or wait a moment to try again.',
+                'red');
             }
 
             this.ready = true;

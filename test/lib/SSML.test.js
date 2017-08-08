@@ -122,7 +122,8 @@ describe('bin/lib/SSML', () => {
 
   describe('audio()', () => {
     it('add audio to ssml output', () => {
-      const expected = '<speak><audio src="some.mp3">Sound plays</audio></speak>';
+      const expected =
+        '<speak><audio src="some.mp3">Sound plays</audio></speak>';
 
       ssml.audio('some.mp3', { fallbackText: 'Sound plays' });
 

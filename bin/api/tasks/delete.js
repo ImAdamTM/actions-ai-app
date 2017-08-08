@@ -21,9 +21,7 @@ exports.deleteIntentFromCache = (intent, cachePath) => {
   const deletePath = path.join(cachePath, '/intents/', `${intent.name}.json`);
 
   return new Promise((resolve, reject) => {
-    fs.remove(deletePath)
-      .then(() => resolve())
-      .catch(err => reject(err));
+    fs.remove(deletePath).then(() => resolve()).catch(err => reject(err));
   });
 };
 
@@ -48,30 +46,34 @@ exports.deleteIntent = (intent, match, props) => {
 
   return new Promise((resolve, reject) => {
     if (match) {
-      request.delete({
-        url: deleteURL,
-        auth: { bearer: props.apiToken },
-        json: true,
-      }, (err, out, stat) => {
-        if (err) {
-          reject(err);
-          return;
-        }
+      request.delete(
+        {
+          url: deleteURL,
+          auth: { bearer: props.apiToken },
+          json: true,
+        },
+        (err, out, stat) => {
+          if (err) {
+            reject(err);
+            return;
+          }
 
-        if (!stat.status || stat.status.code !== 200) {
-          reject(stat);
-          return;
-        }
+          if (!stat.status || stat.status.code !== 200) {
+            reject(stat);
+            return;
+          }
 
-        // Delete the intent from cache
-        exports.deleteIntentFromCache(intent, props.cache)
-          .then(() => resolve())
-          .catch(writeErr => reject(writeErr));
-      });
+          // Delete the intent from cache
+          exports
+            .deleteIntentFromCache(intent, props.cache)
+            .then(() => resolve())
+            .catch(writeErr => reject(writeErr));
+        });
     } else {
       // Skip attempting to delete from api.ai when no match was found,
       // delete the intent from cache
-      exports.deleteIntentFromCache(intent, props.cache)
+      exports
+        .deleteIntentFromCache(intent, props.cache)
         .then(() => resolve())
         .catch(writeErr => reject(writeErr));
     }
@@ -98,22 +100,24 @@ exports.deleteEntity = (entity, match, props) => {
 
   return new Promise((resolve, reject) => {
     if (match) {
-      request.delete({
-        url: deleteURL,
-        auth: { bearer: props.apiToken },
-        json: true,
-      }, (err, out, stat) => {
-        if (err) {
-          reject(err);
-          return;
-        }
+      request.delete(
+        {
+          url: deleteURL,
+          auth: { bearer: props.apiToken },
+          json: true,
+        },
+        (err, out, stat) => {
+          if (err) {
+            reject(err);
+            return;
+          }
 
-        if (!stat.status || stat.status.code !== 200) {
-          reject(stat);
-        }
+          if (!stat.status || stat.status.code !== 200) {
+            reject(stat);
+          }
 
-        resolve();
-      });
+          resolve();
+        });
     } else {
       resolve();
     }
@@ -129,11 +133,12 @@ exports.deleteEntity = (entity, match, props) => {
  * @return {Array} returns an array of tasks
  * @private
  */
-exports.createTasks = (list, props, entries, deleteMethod) => list.reduce(
-  (taskList, entry) => {
+exports.createTasks = (list, props, entries, deleteMethod) =>
+  list.reduce((taskList, entry) => {
     const match = entries.find(item => item.name === entry.name);
-    const input = match ||
-      { name: typeof entry === 'string' ? entry : entry.name };
+    const input = match || {
+      name: typeof entry === 'string' ? entry : entry.name,
+    };
 
     taskList.push(exports[deleteMethod](input, match, props));
     return taskList;
@@ -153,10 +158,7 @@ exports.createTasks = (list, props, entries, deleteMethod) => list.reduce(
 exports.deleteIntents = (list, props, intents) => {
   const tasks = exports.createTasks(list, props, intents, 'deleteIntent');
   return new Promise((resolve, reject) => {
-    Promise
-      .all(tasks)
-      .then(() => resolve())
-      .catch(err => reject(err));
+    Promise.all(tasks).then(() => resolve()).catch(err => reject(err));
   });
 };
 
@@ -175,9 +177,6 @@ exports.deleteEntities = (list, props, entities) => {
   const tasks = exports.createTasks(list, props, entities, 'deleteEntity');
 
   return new Promise((resolve, reject) => {
-    Promise
-      .all(tasks)
-      .then(() => resolve())
-      .catch(err => reject(err));
+    Promise.all(tasks).then(() => resolve()).catch(err => reject(err));
   });
 };

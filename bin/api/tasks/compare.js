@@ -23,7 +23,8 @@ exports.compareIntentWithCache = (intent, cachePath) => {
         resolve(null);
       }
 
-      fs.readJson(inputPath)
+      fs
+        .readJson(inputPath)
         .then((res) => {
           if (JSON.stringify(intent) === JSON.stringify(res)) {
             resolve(true);
@@ -58,7 +59,8 @@ exports.compareEntitiesWithCache = (entities, cachePath) => {
         return;
       }
 
-      fs.readJson(inputPath)
+      fs
+        .readJson(inputPath)
         .then((res) => {
           if (JSON.stringify(entities) === JSON.stringify(res)) {
             resolve(true);

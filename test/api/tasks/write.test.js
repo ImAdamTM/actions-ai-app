@@ -25,10 +25,11 @@ describe('bin/api/tasks/write', () => {
   let fsStub;
 
   beforeEach(() => {
-    fsStub = sinon.stub(fs, 'writeJson').callsFake(() => new Promise(
-      (resolve) => {
-        resolve();
-      }));
+    fsStub = sinon.stub(fs, 'writeJson').callsFake(
+      () =>
+        new Promise((resolve) => {
+          resolve();
+        }));
   });
 
   afterEach(() => {
@@ -36,35 +37,39 @@ describe('bin/api/tasks/write', () => {
   });
 
   describe('writeIntentToCache()', () => {
-    it('tries to write an intent to cache', () => expect(
-      writeIntentToCache(mockIntent, './cache'))
-      .to.eventually.be.fulfilled);
+    it('tries to write an intent to cache', () =>
+      expect(writeIntentToCache(mockIntent, './cache')).to.eventually.be
+        .fulfilled);
 
     it('handles failure to write an intent to cache', () => {
       fsStub.restore();
-      fsStub = sinon.stub(fs, 'writeJson').callsFake(() => new Promise(
-        (resolve, reject) => {
-          reject('write error');
-        }));
+      fsStub = sinon.stub(fs, 'writeJson').callsFake(
+        () =>
+          new Promise((resolve, reject) => {
+            reject('write error');
+          }));
 
-      return expect(writeIntentToCache(mockIntent, './cache'))
+      return expect(
+        writeIntentToCache(mockIntent, './cache'))
         .to.eventually.be.rejectedWith('write error');
     });
   });
 
   describe('writeEntitiesToCache', () => {
-    it('tries to write entities to cache', () => expect(
-      writeEntitiesToCache(mockEntities, './cache'))
-      .to.eventually.be.fulfilled);
+    it('tries to write entities to cache', () =>
+      expect(writeEntitiesToCache(mockEntities, './cache')).to.eventually.be
+        .fulfilled);
 
     it('handles failure to write an intent to cache', () => {
       fsStub.restore();
-      fsStub = sinon.stub(fs, 'writeJson').callsFake(() => new Promise(
-        (resolve, reject) => {
-          reject('write error');
-        }));
+      fsStub = sinon.stub(fs, 'writeJson').callsFake(
+        () =>
+          new Promise((resolve, reject) => {
+            reject('write error');
+          }));
 
-      return expect(writeEntitiesToCache(mockEntities, './cache'))
+      return expect(
+        writeEntitiesToCache(mockEntities, './cache'))
         .to.eventually.be.rejectedWith('write error');
     });
   });

@@ -62,7 +62,10 @@ const Store = function Store(context, app, data) {
  */
 exports.action = function action(key, reducers, defaults = {}) {
   if (this.started) {
-    debug(chalk.bold(`Actions may only be added before start() is called! ('${key}')`), 'red');
+    debug(
+      chalk.bold(
+        `Actions may only be added before start() is called! ('${key}')`),
+      'red');
     return this;
   }
 

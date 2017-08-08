@@ -45,11 +45,13 @@ class SSML {
    * the output is repeated
    */
   add(input, props) {
-    const opts = Object.assign({
-      repeat: null,
-      fallback: null,
-      random: null,
-    }, props);
+    const opts = Object.assign(
+      {
+        repeat: null,
+        fallback: null,
+        random: null,
+      },
+      props);
 
     /* istanbul ignore else */
     if (typeof input === 'string') {
@@ -87,12 +89,12 @@ class SSML {
             this.phrases.push({
               output: input[i].output,
               repeat,
-              fallback: opts.fallback !== null ?
-                opts.fallback :
-                input[i].fallback || false,
-              random: opts.random !== null ?
-                opts.random :
-                input[i].random || false,
+              fallback:
+                opts.fallback !== null
+                  ? opts.fallback
+                  : input[i].fallback || false,
+              random:
+                opts.random !== null ? opts.random : input[i].random || false,
             });
           }
         }
@@ -158,16 +160,20 @@ class SSML {
     for (let i = 0, len = list.length; i < len; i += 1) {
       const item = Object.assign({}, list[i]);
       /* istanbul ignore next */
-      if (item.output.indexOf('<break time') === 0 &&
-          (item.repeat || (item.repeat === null ||
-            item.repeat === undefined))) {
+      if (
+        item.output.indexOf('<break time') === 0 &&
+        (item.repeat || (item.repeat === null || item.repeat === undefined))
+      ) {
         final.push({
           output: '<break time="0.5s"/>',
           repeat: item.repeat,
           random: item.random,
         });
-      } else if (item.repeat || (item.repeat === null ||
-        item.repeat === undefined) || item.fallback) {
+      } else if (
+        item.repeat ||
+        (item.repeat === null || item.repeat === undefined) ||
+        item.fallback
+      ) {
         if (item.fallback) item.fallback = false;
         final.push(item);
       }

@@ -1,7 +1,10 @@
 // bin/lib/util/api.ai
 
 const chai = require('chai');
-const { configureIntent, compileUserSays } = require('../../../bin/lib/util/api.ai');
+const {
+  configureIntent,
+  compileUserSays,
+} = require('../../../bin/lib/util/api.ai');
 
 // Constants
 const { expect } = chai;
@@ -15,9 +18,7 @@ describe('bin/lib/util/api.ai', () => {
 
     it('expects the user to say a standard phrase', () => {
       const intent = configureIntent('test', {
-        userSays: [
-          'Hello',
-        ],
+        userSays: ['Hello'],
       });
 
       expect(intent.userSays[0].data[0].text).to.eq('Hello');
@@ -41,10 +42,7 @@ describe('bin/lib/util/api.ai', () => {
 
     it('add an entity property', () => {
       const intent = configureIntent('test', {
-        userSays: [
-          '@{response:yes}',
-          '@{response:no}',
-        ],
+        userSays: ['@{response:yes}', '@{response:no}'],
       });
 
       expect(intent.responses[0].parameters[0].value).to.eq('$response');
@@ -52,9 +50,7 @@ describe('bin/lib/util/api.ai', () => {
 
     it('add a system (sys) entity property', () => {
       const intent = configureIntent('test', {
-        userSays: [
-          'The date is @{sys.date}',
-        ],
+        userSays: ['The date is @{sys.date}'],
       });
 
       expect(intent.responses[0].parameters[0].dataType).to.eq('@sys.date');

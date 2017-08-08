@@ -40,37 +40,38 @@ describe('bin/api/tasks/clean', () => {
   let mockApiAiEntities;
 
   beforeEach(() => {
-    requestStub = sinon.stub(request, 'delete')
-      .callsFake((props, callback) => {
-        callback(null, '', { status: { code: 200 } });
-      });
+    requestStub = sinon.stub(request, 'delete').callsFake((props, callback) => {
+      callback(null, '', { status: { code: 200 } });
+    });
 
-    requestPutStub = sinon.stub(request, 'put')
-      .callsFake((props, callback) => {
-        callback(null, '', { status: { code: 200 } });
-      });
+    requestPutStub = sinon.stub(request, 'put').callsFake((props, callback) => {
+      callback(null, '', { status: { code: 200 } });
+    });
 
+    fsStub = sinon.stub(fs, 'remove').callsFake(
+      () =>
+        new Promise((resolve) => {
+          resolve();
+        }));
 
-    fsStub = sinon.stub(fs, 'remove')
-      .callsFake(() => new Promise((resolve) => {
-        resolve();
-      }));
-
-    fsEnsureStub = sinon.stub(fs, 'ensureFile')
+    fsEnsureStub = sinon
+      .stub(fs, 'ensureFile')
       .callsFake((inputPath, callback) => {
         callback('', null);
       });
 
-    fsEnsureDirSyncStub = sinon.stub(fs, 'ensureDirSync')
-      .callsFake(() => {});
+    fsEnsureDirSyncStub = sinon.stub(fs, 'ensureDirSync').callsFake(() => {});
 
-    fsReadStub = sinon.stub(fs, 'readdirSync')
+    fsReadStub = sinon
+      .stub(fs, 'readdirSync')
       .callsFake(() => ['a.json', 'b.json', 'c.json']);
 
-    fsReadJsonStub = sinon.stub(fs, 'readJson')
+    fsReadJsonStub = sinon
+      .stub(fs, 'readJson')
       .callsFake(() => Promise.resolve());
 
-    fsWriteJsonStub = sinon.stub(fs, 'writeJson')
+    fsWriteJsonStub = sinon
+      .stub(fs, 'writeJson')
       .callsFake(() => Promise.resolve());
   });
 
@@ -89,37 +90,38 @@ describe('bin/api/tasks/clean', () => {
     it('attempts to clean a set of intents', () => {
       mockApiAiIntents = [{ name: 'test' }, { name: 'test' }];
 
-      return expect(cleanIntents(mockProps, mockApiAiIntents))
-        .to.eventually.be.fulfilled;
+      return expect(cleanIntents(mockProps, mockApiAiIntents)).to.eventually.be
+        .fulfilled;
     });
 
     it('attempts to clean a single intent', () => {
       fsReadStub.restore();
-      fsReadStub = sinon.stub(fs, 'readdirSync')
-        .callsFake(() => ['a.json']);
+      fsReadStub = sinon.stub(fs, 'readdirSync').callsFake(() => ['a.json']);
       mockApiAiIntents = [{ name: 'test' }];
 
-      return expect(cleanIntents(mockProps, mockApiAiIntents))
-        .to.eventually.be.fulfilled;
+      return expect(cleanIntents(mockProps, mockApiAiIntents)).to.eventually.be
+        .fulfilled;
     });
   });
 
   describe('cleanEntities()', () => {
     it('attempts to clean a set of entities', () => {
       mockApiAiEntities = [{ name: 'test' }, { name: 'test' }];
-      return expect(cleanEntities(mockProps, mockApiAiEntities))
-        .to.eventually.be.fulfilled;
+      return expect(cleanEntities(mockProps, mockApiAiEntities)).to.eventually
+        .be.fulfilled;
     });
 
     it('rejects when delete entities fails', () => {
       requestStub.restore();
-      requestStub = sinon.stub(request, 'delete')
+      requestStub = sinon
+        .stub(request, 'delete')
         .callsFake((props, callback) => {
           callback('delete error', '', { status: { code: 200 } });
         });
 
       fsReadJsonStub.restore();
-      fsReadJsonStub = sinon.stub(fs, 'readJson')
+      fsReadJsonStub = sinon
+        .stub(fs, 'readJson')
         .callsFake(() => Promise.resolve([{ name: 'test' }]));
 
       const props = {
@@ -131,31 +133,33 @@ describe('bin/api/tasks/clean', () => {
 
       mockApiAiIntents = [{ id: 'unmatch', name: 'unmatch' }];
 
-      return expect(cleanEntities(props, mockApiAiIntents))
+      return expect(
+        cleanEntities(props, mockApiAiIntents))
         .to.eventually.be.rejectedWith('delete error');
     });
 
     it('rejects when `getCachedFileList()` fails', () => {
       fsEnsureStub.restore();
-      fsEnsureStub = sinon.stub(fs, 'ensureFile')
+      fsEnsureStub = sinon
+        .stub(fs, 'ensureFile')
         .callsFake((inputPath, callback) => {
           callback('', 'cached list error');
         });
 
       mockApiAiIntents = [{ name: 'test' }, { name: 'test' }];
 
-      return expect(cleanEntities(mockProps, mockApiAiIntents))
+      return expect(
+        cleanEntities(mockProps, mockApiAiIntents))
         .to.eventually.be.rejectedWith('cached list error');
     });
 
     it('attempts to clean a single entity', () => {
       fsReadStub.restore();
-      fsReadStub = sinon.stub(fs, 'readdirSync')
-        .callsFake(() => ['a.json']);
+      fsReadStub = sinon.stub(fs, 'readdirSync').callsFake(() => ['a.json']);
       mockApiAiIntents = [{ name: 'test' }];
 
-      return expect(cleanEntities(mockProps, mockApiAiIntents))
-        .to.eventually.be.fulfilled;
+      return expect(cleanEntities(mockProps, mockApiAiIntents)).to.eventually.be
+        .fulfilled;
     });
   });
 
@@ -163,8 +167,7 @@ describe('bin/api/tasks/clean', () => {
     it('flags intents on api.ai for removal when unmatched on local', () => {
       fsReadStub.restore();
 
-      fsReadStub = sinon.stub(fs, 'readdirSync')
-        .callsFake(() => ['test.json']);
+      fsReadStub = sinon.stub(fs, 'readdirSync').callsFake(() => ['test.json']);
 
       const props = {
         cache: './cache',
@@ -177,30 +180,34 @@ describe('bin/api/tasks/clean', () => {
         { id: 'unknown', name: 'unknown' },
       ];
 
-      expect(getCleanList(
-        props, 'intents', mockApiAiIntents, ['test'])[0].id).to.eq('unknown');
+      expect(
+        getCleanList(props, 'intents', mockApiAiIntents, ['test'])[0].id)
+        .to.eq('unknown');
     });
   });
 
   describe('getCachedFileList()', () => {
     it('rejects on `ensureFile` failure', () => {
       fsEnsureStub.restore();
-      fsEnsureStub = sinon.stub(fs, 'ensureFile')
+      fsEnsureStub = sinon
+        .stub(fs, 'ensureFile')
         .callsFake((inputPath, callback) => {
           callback('', 'ensure error');
         });
 
-      return expect(getCachedFileList('/path/to/file', './cache'))
+      return expect(
+        getCachedFileList('/path/to/file', './cache'))
         .to.eventually.be.rejectedWith('ensure error');
     });
 
     it('continues on `readJson` failure', () => {
       fsReadJsonStub.restore();
-      fsReadJsonStub = sinon.stub(fs, 'readJson')
+      fsReadJsonStub = sinon
+        .stub(fs, 'readJson')
         .callsFake(() => Promise.reject('read error'));
 
-      return expect(getCachedFileList('/path/to/file', './cache'))
-        .to.eventually.be.fulfilled;
+      return expect(getCachedFileList('/path/to/file', './cache')).to.eventually
+        .be.fulfilled;
     });
   });
 });

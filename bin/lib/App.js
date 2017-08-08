@@ -55,15 +55,15 @@ class App {
      * is provided, it will restore the current contexts. If an array of
      * contexts is provided it will restore from array
      *
-     * @param {Array} contextList (optional) the custom list of contexts to apply
+     * @param {Array} contextList (optional) the custom list of contexts
      * @return {Array} the array of contexts that were set
      *
      * TODO maybe rename this to reflect what it does more accurately?
      */
     app.restoreContexts = (contextList) => {
-      const contexts = Array.isArray(contextList) ?
-        contextList :
-        app.getContexts();
+      const contexts = Array.isArray(contextList)
+        ? contextList
+        : app.getContexts();
 
       for (let i = 0, len = contexts.length; i < len; i += 1) {
         const context = contexts[i];

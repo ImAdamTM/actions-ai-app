@@ -39,19 +39,19 @@ describe('bin/lib/entity', () => {
     });
 
     it('throws an error when entity key is not provide or not string', () => {
-      expect(() => entityModule({}, entry))
-        .to.throw('Entity key must be a string');
+      expect(() => entityModule({}, entry)).to.throw(
+        'Entity key must be a string');
     });
 
     it('throws an error when no array of entities are provided', () => {
-      expect(() => entityModule('test', null))
-        .to.throw('Entity expects an array of term objects');
+      expect(() => entityModule('test', null)).to.throw(
+        'Entity expects an array of term objects');
     });
 
     it('throws an error when adding an entity with duplicate key', () => {
       entityModule('test', entry);
-      expect(() => entityModule('test', entry))
-        .to.throw('Entity with key already exists: test');
+      expect(() => entityModule('test', entry)).to.throw(
+        'Entity with key already exists: test');
     });
   });
 });

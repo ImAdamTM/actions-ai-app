@@ -7,8 +7,8 @@ const dateFormat = require('dateformat');
 const DEFAULT_COLOR = 'cyan';
 
 // Generate a timestamp
-const getTimestamp = () => `[${
-  chalk.gray(dateFormat(Date.now(), 'HH:MM:ss'))}]`;
+const getTimestamp = () =>
+  `[${chalk.gray(dateFormat(Date.now(), 'HH:MM:ss'))}]`;
 
 // Read the env.NODE_DEBUG to determine which logs are to be used
 /* istanbul ignore next */
@@ -30,14 +30,13 @@ const getNamespace = () => {
   }
 
   return { skips, names };
-};
+}; /* istanbul ignore next */
 
 /**
  * Used in conjunction with `debug()`. Before logging is permitted, we first
  * check the supplied key to see whether it matches the available namespaces
  * @private
- */ /* istanbul ignore next */
-const matchNamespace = (name) => {
+ */ const matchNamespace = (name) => {
   const namespaced = getNamespace();
   let i;
   let len;
@@ -51,14 +50,15 @@ const matchNamespace = (name) => {
   }
 
   return false;
-};
+}; /* istanbul ignore next */
 
 /**
  * Used in conjunction with `debug()` to determine an applicable console
  * color for log output when a color is specified
  * @private
- */ /* istanbul ignore next */
-const getColor = (color, def = DEFAULT_COLOR) => {
+ */ const getColor = (
+  color,
+  def = DEFAULT_COLOR) => {
   if (chalk[color]) return { match: true, color };
   return { match: false, color: def };
 };
@@ -66,13 +66,14 @@ const getColor = (color, def = DEFAULT_COLOR) => {
 /* istanbul ignore next */
 const log = (...args) => {
   if (process.env.NODE_ENV !== 'test') console.log(...args);
-};
+}; /* istanbul ignore next */
 
 /**
  * An internal application logger that supports namespaced logging
  * @private
- */ /* istanbul ignore next */
-const debug = function debug(...args) {
+ */ const debug = function debug(
+  ...args
+) {
   if (!process.env.ACTIONS_AI_APP_DEBUG) return;
 
   const key = `${process.env.ACTIONS_AI_APP_NAMESPACE}:${this.key}`;
@@ -93,9 +94,10 @@ const debug = function debug(...args) {
 /**
  * Export
  */
-module.exports = (key, color) => debug.bind({
-  key,
-  matched: false,
-  match: true,
-  color: color || DEFAULT_COLOR,
-});
+module.exports = (key, color) =>
+  debug.bind({
+    key,
+    matched: false,
+    match: true,
+    color: color || DEFAULT_COLOR,
+  });

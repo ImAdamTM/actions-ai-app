@@ -23,15 +23,16 @@ describe('bin/api/tasks/compare', () => {
   let fsEnsureDirSyncStub;
 
   beforeEach(() => {
-    fsEnsureStub = sinon.stub(fs, 'ensureFile')
+    fsEnsureStub = sinon
+      .stub(fs, 'ensureFile')
       .callsFake((inputPath, callback) => {
         callback('', null);
       });
 
-    fsEnsureDirSyncStub = sinon.stub(fs, 'ensureDirSync')
-      .callsFake(() => {});
+    fsEnsureDirSyncStub = sinon.stub(fs, 'ensureDirSync').callsFake(() => {});
 
-    fsReadStub = sinon.stub(fs, 'readJson')
+    fsReadStub = sinon
+      .stub(fs, 'readJson')
       .callsFake(() => Promise.resolve({ test: 'test' }));
   });
 
@@ -43,60 +44,68 @@ describe('bin/api/tasks/compare', () => {
 
   describe('compareIntentWithCache()', () => {
     it('matches intent with cache', () =>
-      expect(compareIntentWithCache({ test: 'test' }, './cache'))
+      expect(
+        compareIntentWithCache({ test: 'test' }, './cache'))
         .to.eventually.eq(true));
 
     it('observes mismatch between intent and cache', () =>
-      expect(compareIntentWithCache({ test: 'test2' }, './cache'))
+      expect(
+        compareIntentWithCache({ test: 'test2' }, './cache'))
         .to.eventually.eq(false));
 
     it('handles failure to ensure file', () => {
       fsEnsureStub.restore();
-      fsEnsureStub = sinon.stub(fs, 'ensureFile')
+      fsEnsureStub = sinon
+        .stub(fs, 'ensureFile')
         .callsFake((inputPath, callback) => {
           callback('', 'ensure error');
         });
 
-      return expect(compareIntentWithCache({ test: 'test' }, './cache'))
+      return expect(
+        compareIntentWithCache({ test: 'test' }, './cache'))
         .to.eventually.eq(null);
     });
 
     it('handles failure to read cache json', () => {
       fsReadStub.restore();
-      fsReadStub = sinon.stub(fs, 'readJson')
-        .callsFake(() => Promise.reject());
+      fsReadStub = sinon.stub(fs, 'readJson').callsFake(() => Promise.reject());
 
-      return expect(compareIntentWithCache({ test: 'test' }, './cache'))
+      return expect(
+        compareIntentWithCache({ test: 'test' }, './cache'))
         .to.eventually.eq(false);
     });
   });
 
   describe('compareEntitiesWithCache()', () => {
     it('matches entities with cache', () =>
-      expect(compareEntitiesWithCache({ test: 'test' }, './cache'))
+      expect(
+        compareEntitiesWithCache({ test: 'test' }, './cache'))
         .to.eventually.eq(true));
 
     it('observes mismatch between entities and cache', () =>
-      expect(compareEntitiesWithCache({ test: 'test2' }, './cache'))
+      expect(
+        compareEntitiesWithCache({ test: 'test2' }, './cache'))
         .to.eventually.eq(false));
 
     it('handles failure to ensure file', () => {
       fsEnsureStub.restore();
-      fsEnsureStub = sinon.stub(fs, 'ensureFile')
+      fsEnsureStub = sinon
+        .stub(fs, 'ensureFile')
         .callsFake((inputPath, callback) => {
           callback('', 'ensure error');
         });
 
-      return expect(compareEntitiesWithCache({ test: 'test' }, './cache'))
+      return expect(
+        compareEntitiesWithCache({ test: 'test' }, './cache'))
         .to.eventually.eq(null);
     });
 
     it('handles failure to read cache json', () => {
       fsReadStub.restore();
-      fsReadStub = sinon.stub(fs, 'readJson')
-        .callsFake(() => Promise.reject());
+      fsReadStub = sinon.stub(fs, 'readJson').callsFake(() => Promise.reject());
 
-      return expect(compareEntitiesWithCache({ test: 'test' }, './cache'))
+      return expect(
+        compareEntitiesWithCache({ test: 'test' }, './cache'))
         .to.eventually.eq(false);
     });
   });
